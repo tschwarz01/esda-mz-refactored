@@ -1,9 +1,9 @@
 locals {
   # Diagnostics services to create
   diagnostics = {
-    diagnostic_log_analytics = try(var.diagnostics.diagnostic_log_analytics, {})
+    diagnostic_log_analytics    = try(var.diagnostics.diagnostic_log_analytics, {})
+    diagnostic_storage_accounts = try(var.diagnostics.diagnostic_storage_accounts, {})
     #diagnostic_event_hub_namespaces = try(var.diagnostics.diagnostic_event_hub_namespaces, {})
-    #diagnostic_storage_accounts     = try(var.diagnostics.diagnostic_storage_accounts, {})
   }
 
   # Remote amd locally created diagnostics  objects
@@ -11,7 +11,7 @@ locals {
     diagnostics_definition   = try(var.diagnostics.diagnostics_definition, {})
     diagnostics_destinations = try(var.diagnostics.diagnostics_destinations, {})
     log_analytics            = merge(try(var.diagnostics.log_analytics, {}), module.diagnostic_log_analytics)
-    #storage_accounts         = merge(try(var.diagnostics.storage_accounts, {}), module.diagnostic_storage_accounts)
+    storage_accounts         = merge(try(var.diagnostics.storage_accounts, {}), module.diagnostic_storage_accounts)
     #event_hub_namespaces     = merge(try(var.diagnostics.event_hub_namespaces, {}), module.diagnostic_event_hub_namespaces)
   }
 }
@@ -22,7 +22,7 @@ output "diagnostics" {
 
 }
 
-/*
+
 module "diagnostic_storage_accounts" {
   source   = "./storage_account"
   for_each = local.diagnostics.diagnostic_storage_accounts
@@ -30,11 +30,12 @@ module "diagnostic_storage_accounts" {
   global_settings     = local.global_settings
   client_config       = local.client_config
   storage_account     = each.value
-  location            = can(local.global_settings.regions[each.value.region]) ? local.global_settings.regions[each.value.region] : local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group.key, each.value.resource_group_key)].location
-  resource_group_name = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group_key, each.value.resource_group.key)].name
-  base_tags           = try(local.global_settings.inherit_tags, false) ? try(local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group.key, each.value.resource_group_key)].tags, {}) : {}
+  location            = can(local.global_settings.regions[each.value.region]) ? local.global_settings.regions[each.value.region] : local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].location
+  resource_group_name = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : local.combined_objects_resource_groups[try(each.value.resource_group_key, each.value.resource_group.key)].name
+  base_tags           = try(local.global_settings.inherit_tags, false) ? try(local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].tags, {}) : {}
 }
 
+/*
 resource "azurerm_storage_account_customer_managed_key" "diasacmk" {
   depends_on = [module.keyvault_access_policies]
   for_each = {
