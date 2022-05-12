@@ -4,6 +4,9 @@ module "esa-dmz" {
   global_settings      = var.global_settings
   common_module_params = local.common_module_params
   resource_groups      = var.resource_groups
+  #keyvaults                = var.keyvaults
+  #keyvault_access_policies = var.keyvault_access_policies
+  
   networking = {
     vnets                             = var.vnets
     vnet_peerings_v1                  = var.vnet_peerings_v1

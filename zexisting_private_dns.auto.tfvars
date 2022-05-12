@@ -4,5 +4,6 @@ existing_private_dns = {
   dns_zones = [
     "privatelink.blob.core.windows.net",
     "privatelink.dfs.core.windows.net",
+    "privatelink.vaultcore.azure.net",
   ]
 }

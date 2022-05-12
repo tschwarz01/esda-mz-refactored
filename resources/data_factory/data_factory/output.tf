@@ -13,3 +13,7 @@ output "identity" {
 output "rbac_id" {
   value = try(azurerm_data_factory.df.identity[0].principal_id, null)
 }
+
+output "private_endpoint" {
+  value = try(module.private_endpoint, null)
+}

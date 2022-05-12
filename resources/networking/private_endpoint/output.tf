@@ -12,3 +12,7 @@ output "private_dns_zone_configs" {
   value = azurerm_private_endpoint.pep.private_dns_zone_configs
 
 }
+
+output "varsettingsprivatedns" {
+  value = var.settings.private_dns
+}
