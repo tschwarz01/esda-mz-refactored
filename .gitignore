@@ -1,0 +1,4 @@
+*sensitive*
+*tfplan
+*.lock.hcl
+.terraform*
