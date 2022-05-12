@@ -1,3 +1,4 @@
+/*
 output "existing_dns" {
   value = local.existing_private_dns
 }
@@ -15,3 +16,4 @@ output "vaultcore" {
 output "adf" {
   value = module.esa-dmz.data_factory
 }
+*/

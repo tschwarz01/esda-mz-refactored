@@ -6,7 +6,7 @@ module "esa-dmz" {
   resource_groups      = var.resource_groups
   #keyvaults                = var.keyvaults
   #keyvault_access_policies = var.keyvault_access_policies
-  
+
   networking = {
     vnets                             = var.vnets
     vnet_peerings_v1                  = var.vnet_peerings_v1
