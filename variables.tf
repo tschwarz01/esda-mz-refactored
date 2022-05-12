@@ -107,3 +107,14 @@ variable "data_factory_integration_runtime_self_hosted" {
   default = {}
 }
 
+variable "keyvault_access_policies" {
+  default = {}
+}
+
+variable "keyvaults" {
+  default = {}
+}
+
+variable "dynamic_keyvault_secrets" {
+  default = {}
+}

@@ -26,10 +26,11 @@ vnets = {
         }
       }
       services = {
-        name          = "services"
-        cidr          = ["10.50.1.0/24"]
-        should_create = true
-        nsg_key       = "empty_nsg"
+        name              = "services"
+        cidr              = ["10.50.1.0/24"]
+        service_endpoints = ["Microsoft.KeyVault"]
+        should_create     = true
+        nsg_key           = "empty_nsg"
       }
       private_endpoints = {
         name                                           = "private-endpoints"
