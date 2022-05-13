@@ -31,7 +31,7 @@ virtual_machine_scale_sets = {
         automatic_os_upgrade_policy = {
           # Only for upgrade mode = "Automatic"
           disable_automatic_rollback  = false
-          enable_automatic_os_upgrade = true
+          enable_automatic_os_upgrade = false
         }
 
         os_disk = {
