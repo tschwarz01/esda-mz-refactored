@@ -15,7 +15,7 @@ locals {
   combined_objects_lb_backend_address_pool                      = module.lb_backend_address_pool
   combined_objects_load_balancers                               = module.load_balancers
   combined_objects_log_analytics                                = module.log_analytics
-  combined_objects_managed_identities                           = {}
+  combined_objects_managed_identities                           = module.managed_identities
   combined_objects_mssql_managed_instances                      = {}
   combined_objects_mssql_managed_instances_secondary            = {}
   combined_objects_networking                                   = module.networking

@@ -131,3 +131,23 @@ variable "purview_accounts" {
 variable "virtual_machine_scale_sets" {
   default = {}
 }
+
+variable "managed_identities" {
+  default = {}
+}
+
+variable "azure_container_registries" {
+  default = {}
+}
+
+variable "application_security_groups" {
+  default = {}
+}
+
+variable "public_ip_addresses" {
+  default = {}
+}
+
+variable "load_balancers" {
+  default = {}
+}

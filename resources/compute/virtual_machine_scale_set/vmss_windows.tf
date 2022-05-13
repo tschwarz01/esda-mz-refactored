@@ -71,12 +71,13 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
   max_bid_price                = try(each.value.max_bid_price, null)
   priority                     = try(each.value.priority, null)
   provision_vm_agent           = try(each.value.provision_vm_agent, true)
-  proximity_placement_group_id = can(each.value.proximity_placement_group_key) || can(each.value.proximity_placement_group.key) ? var.proximity_placement_groups[try(var.client_config.landingzone_key, var.client_config.landingzone_key)][try(each.value.proximity_placement_group_key, each.value.proximity_placement_group.key)].id : try(each.value.proximity_placement_group_id, each.value.proximity_placement_group.id, null)
+  proximity_placement_group_id = can(each.value.proximity_placement_group_key) || can(each.value.proximity_placement_group.key) ? var.proximity_placement_groups[try(each.value.proximity_placement_group_key, each.value.proximity_placement_group.key)].id : try(each.value.proximity_placement_group_id, each.value.proximity_placement_group.id, null)
   scale_in_policy              = try(each.value.scale_in_policy, null)
   zone_balance                 = try(each.value.zone_balance, null)
   zones                        = try(each.value.zones, null)
   timezone                     = try(each.value.timezone, null)
   license_type                 = try(each.value.license_type, null)
+  upgrade_mode                 = try(each.value.upgrade_mode, null)
 
   dynamic "network_interface" {
     for_each = try(var.settings.network_interfaces, {})
@@ -89,19 +90,19 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
       network_security_group_id     = try(network_interface.value.network_security_group_id, null)
 
       ip_configuration {
-        name                                         = azurecaf_name.windows_nic[network_interface.key].result
-        primary                                      = try(network_interface.value.primary, false)
-        subnet_id                                    = can(network_interface.value.subnet_id) ? network_interface.value.subnet_id : var.vnets[try(network_interface.value.lz_key, var.client_config.landingzone_key)][network_interface.value.vnet_key].subnets[network_interface.value.subnet_key].id
-        load_balancer_backend_address_pool_ids       = try(local.load_balancer_backend_address_pool_ids, null)
-        application_gateway_backend_address_pool_ids = try(local.application_gateway_backend_address_pool_ids, null)
-        application_security_group_ids               = try(local.application_security_group_ids, null)
+        name                                   = azurecaf_name.windows_nic[network_interface.key].result
+        primary                                = try(network_interface.value.primary, false)
+        subnet_id                              = can(network_interface.value.subnet_id) ? network_interface.value.subnet_id : var.vnets[network_interface.value.vnet_key].subnets[network_interface.value.subnet_key].id
+        load_balancer_backend_address_pool_ids = try(local.load_balancer_backend_address_pool_ids, null)
+        #application_gateway_backend_address_pool_ids = try(local.application_gateway_backend_address_pool_ids, null)
+        application_security_group_ids = try(local.application_security_group_ids, null)
       }
     }
   }
 
   os_disk {
     caching                   = try(each.value.os_disk.caching, null)
-    disk_encryption_set_id    = try(each.value.os_disk.disk_encryption_set_key, null) == null ? null : try(var.disk_encryption_sets[var.client_config.landingzone_key][each.value.os_disk.disk_encryption_set_key].id, var.disk_encryption_sets[each.value.os_disk.lz_key][each.value.os_disk.disk_encryption_set_key].id, null)
+    disk_encryption_set_id    = try(each.value.os_disk.disk_encryption_set_key, null) == null ? null : try(var.disk_encryption_sets.id, var.disk_encryption_sets[each.value.os_disk.disk_encryption_set_key].id, null)
     disk_size_gb              = try(each.value.os_disk.disk_size_gb, null)
     storage_account_type      = try(each.value.os_disk.storage_account_type, null)
     write_accelerator_enabled = try(each.value.os_disk.write_accelerator_enabled, false)
@@ -116,7 +117,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
       disk_size_gb           = data_disk.value.disk_size_gb
       lun                    = data_disk.value.lun
       storage_account_type   = data_disk.value.storage_account_type
-      disk_encryption_set_id = try(data_disk.value.disk_encryption_set_key, null) == null ? null : try(var.disk_encryption_sets[var.client_config.landingzone_key][data_disk.value.disk_encryption_set_key].id, var.disk_encryption_sets[data_disk.value.lz_key][data_disk.value.disk_encryption_set_key].id, null)
+      disk_encryption_set_id = try(data_disk.value.disk_encryption_set_key, null) == null ? null : try(var.disk_encryption_sets[data_disk.value.disk_encryption_set_key].id, var.disk_encryption_sets[data_disk.value.disk_encryption_set_key].id, null)
       #      disk_iops_read_write      = try(data_disk.value.storage_account_type == "UltraSSD_LRS" ? data_disk.value.disk_iops_read_write : null, null)
       #      disk_mbps_read_write      = try(data_disk.value.storage_account_type == "UltraSSD_LRS" ? data_disk.value.disk_mbps_read_write : null, null)
       write_accelerator_enabled = try(data_disk.value.write_accelerator_enabled, null)
@@ -135,7 +136,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
   }
 
   source_image_id = try(each.value.source_image_reference, null) == null ? format("%s%s",
-    try(each.value.custom_image_id, var.image_definitions[try(each.value.custom_image_lz_key, var.client_config.landingzone_key)][each.value.custom_image_key].id),
+    try(each.value.custom_image_id, var.image_definitions[each.value.custom_image_key].id),
   try("/versions/${each.value.custom_image_version}", "")) : null
 
   dynamic "plan" {
@@ -264,7 +265,7 @@ resource "azurerm_windows_virtual_machine_scale_set" "vmss" {
     }
   }
 
-  health_probe_id = try(var.load_balancers[try(each.value.lz_key, var.client_config.landingzone_key)][each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
+  health_probe_id = try(var.load_balancers[each.value.health_probe.loadbalancer_key].probes[each.value.health_probe.probe_key].id, null)
 
   # lifecycle {
   #   ignore_changes = [

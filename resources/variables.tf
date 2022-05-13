@@ -133,6 +133,11 @@ variable "role_mapping" {
   }
 }
 
+variable "managed_identities" {
+  description = "Configuration object - Azure managed identity resources"
+  default     = {}
+}
+
 variable "data_factory" {
   description = "Configuration object - Azure Data Factory resources"
   default     = {}

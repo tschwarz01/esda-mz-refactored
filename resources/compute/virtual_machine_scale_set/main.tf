@@ -33,15 +33,16 @@ locals {
   load_balancer_backend_address_pool_ids = flatten([
     for nic, nic_value in var.settings.network_interfaces : [
       for lb, lb_value in try(nic_value.load_balancers, {}) : [
-        try(var.load_balancers[try(var.client_config.landingzone_key, lb_value.lz_key)][lb_value.lb_key].backend_address_pool_id, null)
+        try(var.load_balancers[lb_value.lb_key].backend_address_pool_id, null)
       ]
     ]
   ])
 
+
   application_security_group_ids = flatten([
     for nic, nic_value in var.settings.network_interfaces : [
       for asg, asg_value in try(nic_value.application_security_groups, {}) : [
-        try(var.application_security_groups[var.client_config.landingzone_key][asg_value.asg_key].id, var.application_security_groups[asg_value.lz_key][asg_value.asg_key].id)
+        try(var.application_security_groups[asg_value.asg_key].id, null)
       ]
     ]
   ])

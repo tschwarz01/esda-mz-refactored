@@ -7,7 +7,7 @@ module "virtual_machine_scale_sets" {
     #module.keyvault_access_policies_azuread_apps,
     #module.proximity_placement_groups,
     #module.application_gateways,
-    #module.application_security_groups,
+    module.application_security_groups,
     #module.packer_service_principal,
     #module.packer_build,
     #module.proximity_placement_groups
@@ -20,8 +20,8 @@ module "virtual_machine_scale_sets" {
   application_security_groups = local.combined_objects_application_security_groups
   disk_encryption_sets        = local.combined_objects_disk_encryption_sets
   #image_definitions                = local.combined_objects_image_definitions
-  keyvaults = local.combined_objects_keyvaults
-  #managed_identities               = local.combined_objects_managed_identities
+  keyvaults          = local.combined_objects_keyvaults
+  managed_identities = local.combined_objects_managed_identities
   #proximity_placement_groups       = local.combined_objects_proximity_placement_groups
   #recovery_vaults                  = local.combined_objects_recovery_vaults
 
