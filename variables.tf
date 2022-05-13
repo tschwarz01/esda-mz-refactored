@@ -127,3 +127,7 @@ variable "dynamic_keyvault_secrets" {
 variable "purview_accounts" {
   default = {}
 }
+
+variable "virtual_machine_scale_sets" {
+  default = {}
+}

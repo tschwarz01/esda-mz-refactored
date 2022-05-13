@@ -50,7 +50,7 @@ locals {
 
   security = {
     #disk_encryption_sets                = try(var.security.disk_encryption_sets, {})
-    #dynamic_keyvault_secrets            = try(var.security.dynamic_keyvault_secrets, {})
+    dynamic_keyvault_secrets = try(var.security.dynamic_keyvault_secrets, {})
     #keyvault_certificate_issuers        = try(var.security.keyvault_certificate_issuers, {})
     #keyvault_certificate_requests       = try(var.security.keyvault_certificate_requests, {})
     #keyvault_certificates               = try(var.security.keyvault_certificates, {})
@@ -166,14 +166,12 @@ locals {
     /*
     aks_clusters                        = try(var.compute.aks_clusters, {})
     availability_sets                   = try(var.compute.availability_sets, {})
-    azure_container_registries          = try(var.compute.azure_container_registries, {})
     bastion_hosts                       = try(var.compute.bastion_hosts, {})
     batch_accounts                      = try(var.compute.batch_accounts, {})
     batch_applications                  = try(var.compute.batch_applications, {})
     batch_certificates                  = try(var.compute.batch_certificates, {})
     batch_jobs                          = try(var.compute.batch_jobs, {})
     batch_pools                         = try(var.compute.batch_pools, {})
-    container_groups                    = try(var.compute.container_groups, {})
     dedicated_hosts                     = try(var.compute.dedicated_hosts, {})
     dedicated_host_groups               = try(var.compute.dedicated_host_groups, {})
     machine_learning_compute_instance   = try(var.compute.machine_learning_compute_instance, {})
@@ -188,7 +186,9 @@ locals {
     runbooks                            = try(var.compute.runbooks, {})
     virtual_machines                    = try(var.compute.virtual_machines, {})
     */
-    #virtual_machine_scale_sets = try(var.compute.virtual_machine_scale_sets, {})
+    container_groups           = try(var.compute.container_groups, {})
+    azure_container_registries = try(var.compute.azure_container_registries, {})
+    virtual_machine_scale_sets = try(var.compute.virtual_machine_scale_sets, {})
   }
 }
 

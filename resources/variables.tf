@@ -115,6 +115,10 @@ variable "security" {
   default     = {}
 }
 
+variable "dynamic_keyvault_secrets" {
+  default = {}
+}
+
 variable "data_factory" {
   description = "Configuration object - Azure Data Factory resources"
   default     = {}
@@ -126,4 +130,12 @@ variable "data_factory_integration_runtime_self_hosted" {
 
 variable "purview" {
   default = {}
+}
+
+## Compute variables
+variable "compute" {
+  description = "Configuration object - Azure compute resources"
+  default = {
+    virtual_machines = {}
+  }
 }

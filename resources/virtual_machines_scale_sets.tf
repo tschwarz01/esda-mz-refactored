@@ -4,8 +4,8 @@ module "virtual_machine_scale_sets" {
   source = "./compute/virtual_machine_scale_set"
   depends_on = [
     #module.availability_sets,
-    #module.dynamic_keyvault_secrets,
-    #module.keyvault_access_policies,
+    module.dynamic_keyvault_secrets,
+    module.keyvault_access_policies,
     #module.keyvault_access_policies_azuread_apps,
     #module.proximity_placement_groups,
     #module.application_gateways,
@@ -19,10 +19,10 @@ module "virtual_machine_scale_sets" {
 
   #availability_sets                = local.combined_objects_availability_sets
   #application_gateways             = local.combined_objects_application_gateways
-  #application_security_groups      = local.combined_objects_application_security_groups
+  application_security_groups      = local.combined_objects_application_security_groups
   #disk_encryption_sets             = local.combined_objects_disk_encryption_sets
   #image_definitions                = local.combined_objects_image_definitions
-  #keyvaults                        = local.combined_objects_keyvaults
+  keyvaults                        = local.combined_objects_keyvaults
   #managed_identities               = local.combined_objects_managed_identities
   #proximity_placement_groups       = local.combined_objects_proximity_placement_groups
   #recovery_vaults                  = local.combined_objects_recovery_vaults
