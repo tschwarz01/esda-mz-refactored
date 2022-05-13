@@ -151,3 +151,7 @@ variable "public_ip_addresses" {
 variable "load_balancers" {
   default = {}
 }
+
+variable "virtual_machine_scale_set_extensions" {
+  default = {}
+}
