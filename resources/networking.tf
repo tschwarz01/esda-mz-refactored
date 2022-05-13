@@ -7,6 +7,13 @@ output "virtual_subnets" {
   value = module.virtual_subnets
 }
 
+output "public_ip_addresses" {
+  value = module.public_ip_addresses
+}
+
+output "public_ip_prefixes" {
+  value = module.public_ip_prefixes
+}
 
 #
 #
@@ -196,4 +203,87 @@ resource "azapi_resource" "virtualNetworkPeerings" {
     }
   })
 
+}
+
+#
+#
+# Public IP Addresses
+#
+#
+
+# naming convention for public IP address
+resource "azurecaf_name" "public_ip_addresses" {
+  for_each = local.networking.public_ip_addresses
+
+  name          = try(each.value.name, null)
+  resource_type = "azurerm_public_ip"
+  prefixes      = local.global_settings.prefixes
+  random_length = local.global_settings.random_length
+  clean_input   = true
+  passthrough   = local.global_settings.passthrough
+  use_slug      = local.global_settings.use_slug
+}
+
+module "public_ip_addresses" {
+  source   = "./networking/public_ip_addresses"
+  for_each = local.networking.public_ip_addresses
+
+  name                       = azurecaf_name.public_ip_addresses[each.key].result
+  location                   = can(local.global_settings.regions[each.value.region]) ? local.global_settings.regions[each.value.region] : local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].location
+  resource_group_name        = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : local.combined_objects_resource_groups[try(each.value.resource_group_key, each.value.resource_group.key)].name
+  sku                        = try(each.value.sku, "Basic")
+  allocation_method          = try(each.value.allocation_method, "Dynamic")
+  ip_version                 = try(each.value.ip_version, "IPv4")
+  idle_timeout_in_minutes    = try(each.value.idle_timeout_in_minutes, null)
+  domain_name_label          = try(each.value.domain_name_label, null)
+  reverse_fqdn               = try(each.value.reverse_fqdn, null)
+  generate_domain_name_label = try(each.value.generate_domain_name_label, false)
+  tags                       = try(each.value.tags, null)
+  ip_tags                    = try(each.value.ip_tags, null)
+  public_ip_prefix_id        = can(each.value.public_ip_prefix.key) ? local.combined_objects_public_ip_prefixes[each.value.public_ip_prefix.key].id : try(each.value.public_ip_prefix_id, null)
+  zones = coalesce(
+    try(each.value.availability_zone, ""),
+    try(tostring(each.value.zones[0]), ""),
+    try(each.value.sku, "Basic") == "Basic" ? "No-Zone" : "Zone-Redundant"
+  )
+  diagnostic_profiles = try(each.value.diagnostic_profiles, {})
+  diagnostics         = local.combined_diagnostics
+  base_tags           = try(local.global_settings.inherit_tags, false) ? try(local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].tags, {}) : {}
+}
+
+#
+#
+# Public IP Prefixes
+#
+#
+
+# naming convention for public IP prefixes
+resource "azurecaf_name" "public_ip_prefixes" {
+  for_each = local.networking.public_ip_prefixes
+
+  name          = try(each.value.name, null)
+  resource_type = "azurerm_public_ip_prefix"
+  prefixes      = local.global_settings.prefixes
+  random_length = local.global_settings.random_length
+  clean_input   = true
+  passthrough   = local.global_settings.passthrough
+  use_slug      = local.global_settings.use_slug
+}
+
+module "public_ip_prefixes" {
+  source   = "./networking/public_ip_prefixes"
+  for_each = local.networking.public_ip_prefixes
+
+  name                = azurecaf_name.public_ip_prefixes[each.key].result
+  resource_group_name = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : local.combined_objects_resource_groups[try(each.value.resource_group_key, each.value.resource_group.key)].name
+  location            = can(local.global_settings.regions[each.value.region]) ? local.global_settings.regions[each.value.region] : local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].location
+  sku                 = try(each.value.sku, "Standard")
+  ip_version          = try(each.value.ip_version, "IPv4")
+  tags                = try(each.value.tags, null)
+  zones               = try(each.value.zones, "Zone-Redundant")
+  prefix_length       = try(each.value.prefix_length, 28)
+  create_pips         = try(each.value.create_pips, false)
+  diagnostic_profiles = try(each.value.diagnostic_profiles, {})
+  diagnostics         = local.combined_diagnostics
+  base_tags           = try(local.global_settings.inherit_tags, false) ? try(local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].tags, {}) : {}
 }
