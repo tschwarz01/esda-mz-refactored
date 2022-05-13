@@ -58,6 +58,21 @@ vnets = {
         should_create = false
       }
     }
+    /*
+    datagateway = {
+      name          = "gatewaysubnet"
+      cidr          = ["10.50.2.128/26"]
+      should_create = true
+      nsg_key       = "empty_nsg"
+      delegation = {
+        name               = "power_platform_data_gateway"
+        service_delegation = "Microsoft.PowerPlatform/vnetaccesslinks"
+        actions = [
+          "Microsoft.Network/virtualNetworks/subnets/action"
+        ]
+      }
+    }
+    */
     diagnostic_profiles = {
       operation = {
         definition_key   = "networking_all"
