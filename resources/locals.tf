@@ -185,10 +185,11 @@ locals {
     wvd_workspaces                      = try(var.compute.wvd_workspaces, {})
     runbooks                            = try(var.compute.runbooks, {})
     */
-    container_groups           = try(var.compute.container_groups, {})
-    azure_container_registries = try(var.compute.azure_container_registries, {})
-    virtual_machines           = try(var.compute.virtual_machines, {})
-    virtual_machine_scale_sets = try(var.compute.virtual_machine_scale_sets, {})
+    container_groups                                      = try(var.compute.container_groups, {})
+    azure_container_registries                            = try(var.compute.azure_container_registries, {})
+    virtual_machines                                      = try(var.compute.virtual_machines, {})
+    virtual_machine_scale_sets                            = try(var.compute.virtual_machine_scale_sets, {})
+    vmss_extensions_custom_script_adf_integration_runtime = try(var.compute.vmss_extensions_custom_script_adf_integration_runtime, {})
   }
 
   storage = {

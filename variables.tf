@@ -155,3 +155,7 @@ variable "load_balancers" {
 variable "virtual_machine_scale_set_extensions" {
   default = {}
 }
+
+variable "vmss_extensions_custom_script_adf_integration_runtime" {
+  default = {}
+}

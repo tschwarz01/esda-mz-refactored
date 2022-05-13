@@ -18,7 +18,8 @@ module "esa-dmz" {
   }
 
   compute = {
-    virtual_machine_scale_sets = var.virtual_machine_scale_sets
+    virtual_machine_scale_sets                            = var.virtual_machine_scale_sets
+    vmss_extensions_custom_script_adf_integration_runtime = var.vmss_extensions_custom_script_adf_integration_runtime
   }
 
   data_factory = {

@@ -158,3 +158,7 @@ variable "compute" {
     virtual_machines = {}
   }
 }
+
+variable "vmss_extensions_custom_script_adf_integration_runtime" {
+  default = {}
+}

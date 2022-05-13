@@ -95,24 +95,7 @@ virtual_machine_scale_sets = {
     }
     ultra_ssd_enabled = false # required if planning to use UltraSSD_LRS
 
-    virtual_machine_scale_set_extensions = {
-      custom_script = {
-        # You can define fileuris directly or use fileuri_sa reference keys and lz_key:
-        # fileuris                  = ["https://somelocation/container/script.ps1"]
-        #fileuri_sa_key            = "sa1"
-        #fileuri_sa_path           = "files/helloworld.sh"
 
-        identity_type             = "SystemAssigned" # optional to use managed_identity for download from location specified in fileuri, UserAssigned or SystemAssigned.
-        automatic_upgrade_enabled = false
-
-        adf_integration_runtime = {
-          integration_runtime_key = "dfirsh1"
-          basecommandtoexecute    = "powershell.exe -ExecutionPolicy Unrestricted -File installSHIRGateway.ps1 -gatewayKey"
-          script_location         = "https://raw.githubusercontent.com/Azure/data-landing-zone/main/code/installSHIRGateway.ps1"
-          authorization_key       = try(local.combined_objects_data_factory_integration_runtime_self_hosted[each.integration_runtime.key].primary_authorization_key, null)
-        }
-      }
-    }
 
     /*
     virtual_machine_scale_set_extensions = {

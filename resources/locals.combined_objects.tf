@@ -30,9 +30,10 @@ locals {
   combined_objects_storage_accounts                             = module.storage_accounts
   combined_objects_storage_containers                           = module.storage_containers
 
-  combined_objects_virtual_subnets            = module.virtual_subnets
-  combined_objects_virtual_machines           = module.virtual_machines
-  combined_objects_virtual_machine_scale_sets = module.virtual_machine_scale_sets
+  combined_objects_virtual_subnets                                       = module.virtual_subnets
+  combined_objects_virtual_machines                                      = module.virtual_machines
+  combined_objects_virtual_machine_scale_sets                            = module.virtual_machine_scale_sets
+  combined_objects_vmss_extensions_custom_script_adf_integration_runtime = module.vmss_extensions_custom_script_adf_integration_runtime
   #combined_objects_azurerm_firewalls = module.azurerm_firewalls
 
 

@@ -35,7 +35,7 @@ locals {
     }
   }
   map_command = {
-    commandToExecute = try(var.integration_runtime.commandtoexecute, null) != null ? var.integration_runtime.commandtoexecute : try(var.extension.commandtoexecute, "")
+    commandToExecute = try(var.integration_runtimes.commandtoexecute, null) != null ? var.integration_runtimes.commandtoexecute : try(var.extension.commandtoexecute, "")
   }
 
   system_assigned_id = local.identity_type == "SystemAssigned" ? local.map_system_assigned : null
@@ -53,5 +53,5 @@ locals {
   fileuri_sa_path      = try(var.extension.fileuri_sa_path, "")
   fileuri_sa           = local.fileuri_sa_key != "" ? try(var.storage_accounts[var.client_config.landingzone_key][var.extension.fileuri_sa_key].primary_blob_endpoint, try(var.storage_accounts[var.extension.lz_key][var.extension.fileuri_sa_key].primary_blob_endpoint)) : ""
   fileuri_sa_full_path = "${local.fileuri_sa}${local.fileuri_sa_path}"
-  fileuri_sa_defined   = try(var.integration_runtime.fileuris, null) ? var.integration_runtime.fileuris : try(var.extension.fileuris, "")
+  fileuri_sa_defined   = try(var.integration_runtimes.fileuris, null) ? var.integration_runtimes.fileuris : try(var.extension.fileuris, "")
 }
