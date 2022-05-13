@@ -13,6 +13,10 @@ module "esa-dmz" {
     network_security_group_definition = var.network_security_group_definition
   }
 
+  compute = {
+    virtual_machine_scale_sets = var.virtual_machine_scale_sets
+  }
+
   data_factory = {
     data_factory                                 = var.data_factory
     data_factory_integration_runtime_self_hosted = var.data_factory_integration_runtime_self_hosted
