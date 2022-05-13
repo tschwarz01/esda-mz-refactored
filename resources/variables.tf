@@ -123,3 +123,7 @@ variable "data_factory" {
 variable "data_factory_integration_runtime_self_hosted" {
   default = {}
 }
+
+variable "purview" {
+  default = {}
+}

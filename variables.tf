@@ -89,6 +89,11 @@ variable "diagnostic_log_analytics" {
   default = {}
 }
 
+variable "diagnostic_storage_accounts" {
+  description = ""
+  default     = {}
+}
+
 variable "log_analytics" {
   description = "Configuration object - Log Analytics resources."
   default     = {}
@@ -116,5 +121,9 @@ variable "keyvaults" {
 }
 
 variable "dynamic_keyvault_secrets" {
+  default = {}
+}
+
+variable "purview_accounts" {
   default = {}
 }

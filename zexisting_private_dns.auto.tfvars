@@ -7,5 +7,7 @@ existing_private_dns = {
     "privatelink.vaultcore.azure.net",
     "privatelink.datafactory.azure.net",
     "privatelink.adf.azure.com",
+    "privatelink.purview.azure.com",
+    "privatelink.purviewstudio.azure.com" 
   ]
 }

@@ -18,14 +18,18 @@ module "esa-dmz" {
     data_factory_integration_runtime_self_hosted = var.data_factory_integration_runtime_self_hosted
   }
 
+  purview = {
+    purview_accounts = var.purview_accounts
+  }
+
   remote_objects = {
     private_dns = local.existing_private_dns
   }
 
   diagnostics = {
-    diagnostic_log_analytics = var.diagnostic_log_analytics
-    diagnostics_destinations = var.diagnostics_destinations
-    diagnostics_definition   = var.diagnostics_definition
-    #diagnostic_storage_accounts = var.diagnostic_storage_accounts
+    diagnostic_log_analytics    = var.diagnostic_log_analytics
+    diagnostics_destinations    = var.diagnostics_destinations
+    diagnostics_definition      = var.diagnostics_definition
+    diagnostic_storage_accounts = var.diagnostic_storage_accounts
   }
 }
