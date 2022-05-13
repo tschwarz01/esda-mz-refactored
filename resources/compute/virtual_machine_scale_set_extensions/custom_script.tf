@@ -35,7 +35,7 @@ locals {
     }
   }
   map_command = {
-    commandToExecute = try(var.integration_runtimes.commandtoexecute, null) != null ? var.integration_runtimes.commandtoexecute : try(var.extension.commandtoexecute, "")
+    commandToExecute = try(var.commandtoexecute, "")
   }
 
   system_assigned_id = local.identity_type == "SystemAssigned" ? local.map_system_assigned : null
@@ -48,10 +48,10 @@ locals {
   protected_settings = merge(local.map_command, local.system_assigned_id, local.user_assigned_id)
 
   # Fileuris
-  fileuris             = local.fileuri_sa_defined == "" ? [local.fileuri_sa_full_path] : var.extension.fileuris
+  fileuris             = local.fileuri_sa_defined == "" ? [local.fileuri_sa_full_path] : var.fileuris
   fileuri_sa_key       = try(var.extension.fileuri_sa_key, "")
   fileuri_sa_path      = try(var.extension.fileuri_sa_path, "")
-  fileuri_sa           = local.fileuri_sa_key != "" ? try(var.storage_accounts[var.client_config.landingzone_key][var.extension.fileuri_sa_key].primary_blob_endpoint, try(var.storage_accounts[var.extension.lz_key][var.extension.fileuri_sa_key].primary_blob_endpoint)) : ""
+  fileuri_sa           = local.fileuri_sa_key != "" ? try(var.storage_accounts[var.extension.fileuri_sa_key].primary_blob_endpoint, null) != null : ""
   fileuri_sa_full_path = "${local.fileuri_sa}${local.fileuri_sa_path}"
-  fileuri_sa_defined   = try(var.integration_runtimes.fileuris, null) ? var.integration_runtimes.fileuris : try(var.extension.fileuris, "")
+  fileuri_sa_defined   = try(var.fileuris, "")
 }

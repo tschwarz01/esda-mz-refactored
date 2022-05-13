@@ -30,3 +30,11 @@ variable "log_analytics_workspaces" {
 variable "managed_identities" {
   default = {}
 }
+
+variable "fileuris" {
+
+}
+
+variable "commandtoexecute" {
+
+}
