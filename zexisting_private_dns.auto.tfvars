@@ -4,10 +4,12 @@ existing_private_dns = {
   dns_zones = [
     "privatelink.blob.core.windows.net",
     "privatelink.dfs.core.windows.net",
+    "privatelink.queue.core.windows.net",
     "privatelink.vaultcore.azure.net",
     "privatelink.datafactory.azure.net",
     "privatelink.adf.azure.com",
     "privatelink.purview.azure.com",
-    "privatelink.purviewstudio.azure.com" 
+    "privatelink.purviewstudio.azure.com",
+    "privatelink.servicebus.windows.net",
   ]
 }

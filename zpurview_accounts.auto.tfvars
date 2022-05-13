@@ -47,7 +47,7 @@ purview_accounts = {
       }
     }
     # Requires azurerm >= 2.92.0
-    managed_resources_private_endpoints = {
+    managed_resource_private_endpoints = {
       blob = {
         name               = "blob"
         resource_group_key = "governance"
