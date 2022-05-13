@@ -49,7 +49,7 @@ locals {
   }
 
   security = {
-    #disk_encryption_sets                = try(var.security.disk_encryption_sets, {})
+    disk_encryption_sets     = try(var.security.disk_encryption_sets, {})
     dynamic_keyvault_secrets = try(var.security.dynamic_keyvault_secrets, {})
     #keyvault_certificate_issuers        = try(var.security.keyvault_certificate_issuers, {})
     #keyvault_certificate_requests       = try(var.security.keyvault_certificate_requests, {})
@@ -184,11 +184,18 @@ locals {
     wvd_host_pools                      = try(var.compute.wvd_host_pools, {})
     wvd_workspaces                      = try(var.compute.wvd_workspaces, {})
     runbooks                            = try(var.compute.runbooks, {})
-    virtual_machines                    = try(var.compute.virtual_machines, {})
     */
     container_groups           = try(var.compute.container_groups, {})
     azure_container_registries = try(var.compute.azure_container_registries, {})
+    virtual_machines           = try(var.compute.virtual_machines, {})
     virtual_machine_scale_sets = try(var.compute.virtual_machine_scale_sets, {})
+  }
+
+  storage = {
+    netapp_accounts        = try(var.storage.netapp_accounts, {})
+    storage_account_blobs  = try(var.storage.storage_account_blobs, {})
+    storage_account_queues = try(var.storage.storage_account_queues, {})
+    storage_containers     = try(var.storage.storage_containers, {})
   }
 }
 

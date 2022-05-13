@@ -8,8 +8,7 @@ variable "location" {
   description = "(Required) Specifies the supported Azure location where to create the resource. Changing this forces a new resource to be created."
   type        = string
 }
-variable "application_security_groups" {}
-#variable "application_gateways" {}
+
 variable "resource_group_name" {
   description = "Name of the existing resource group to deploy the virtual machine"
 }
@@ -21,7 +20,7 @@ variable "keyvaults" {
 
 variable "boot_diagnostics_storage_account" {
   description = "(Optional) The Primary/Secondary Endpoint for the Azure Storage Account (general purpose) which should be used to store Boot Diagnostics, including Console Output and Screenshots from the Hypervisor."
-  default     = {}
+  default     = null
 }
 
 variable "settings" {}
@@ -49,6 +48,10 @@ variable "recovery_vaults" {
   default = {}
 }
 
+variable "storage_accounts" {
+  default = {}
+}
+
 variable "availability_sets" {
   default = {}
 }
@@ -62,14 +65,28 @@ variable "proximity_placement_groups" {
   default = {}
 }
 
+variable "disk_encryption_sets" {
+  default = {}
+}
+
+variable "application_security_groups" {
+  default = {}
+}
+
+variable "virtual_machines" {
+  default = {}
+}
+variable "image_definitions" {
+  default = {}
+}
+variable "custom_image_ids" {
+  default = {}
+}
 variable "network_security_groups" {
   default     = {}
   description = "Require a version 1 NSG definition to be attached to a nic."
 }
 
-variable "image_definitions" {
+variable "dedicated_hosts" {
   default = {}
 }
-variable "disk_encryption_sets" {}
-
-variable "load_balancers" {}

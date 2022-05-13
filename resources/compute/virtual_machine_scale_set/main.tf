@@ -17,6 +17,7 @@ locals {
   }
   tags = merge(var.base_tags, local.module_tag, try(var.settings.tags, null))
 
+  /*
   application_gateway_backend_address_pool_ids = flatten([
     for nic, nic_value in var.settings.network_interfaces : [
       for appgw, appgw_value in try(nic_value.appgw_backend_pools, {}) : [
@@ -26,6 +27,8 @@ locals {
       ]
     ]
   ])
+*/
+
 
   load_balancer_backend_address_pool_ids = flatten([
     for nic, nic_value in var.settings.network_interfaces : [

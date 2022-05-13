@@ -1,5 +1,3 @@
-/*
-
 module "virtual_machine_scale_sets" {
   source = "./compute/virtual_machine_scale_set"
   depends_on = [
@@ -19,14 +17,14 @@ module "virtual_machine_scale_sets" {
 
   #availability_sets                = local.combined_objects_availability_sets
   #application_gateways             = local.combined_objects_application_gateways
-  application_security_groups      = local.combined_objects_application_security_groups
-  #disk_encryption_sets             = local.combined_objects_disk_encryption_sets
+  application_security_groups = local.combined_objects_application_security_groups
+  disk_encryption_sets        = local.combined_objects_disk_encryption_sets
   #image_definitions                = local.combined_objects_image_definitions
-  keyvaults                        = local.combined_objects_keyvaults
+  keyvaults = local.combined_objects_keyvaults
   #managed_identities               = local.combined_objects_managed_identities
   #proximity_placement_groups       = local.combined_objects_proximity_placement_groups
   #recovery_vaults                  = local.combined_objects_recovery_vaults
-  
+
   base_tags                        = try(local.global_settings.inherit_tags, false) ? try(local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].tags, {}) : {}
   boot_diagnostics_storage_account = try(local.combined_diagnostics.storage_accounts[each.value.boot_diagnostics_storage_account_key].primary_blob_endpoint, {})
   client_config                    = local.client_config
@@ -46,4 +44,3 @@ output "virtual_machine_scale_sets" {
   value = module.virtual_machine_scale_sets
 }
 
-*/

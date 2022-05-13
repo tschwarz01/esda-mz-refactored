@@ -119,6 +119,20 @@ variable "dynamic_keyvault_secrets" {
   default = {}
 }
 
+variable "custom_role_definitions" {
+  description = "Configuration object - Custom role definitions"
+  default     = {}
+}
+
+
+variable "role_mapping" {
+  description = "Configuration object - Role mapping"
+  default = {
+    built_in_role_mapping = {}
+    custom_role_mapping   = {}
+  }
+}
+
 variable "data_factory" {
   description = "Configuration object - Azure Data Factory resources"
   default     = {}
