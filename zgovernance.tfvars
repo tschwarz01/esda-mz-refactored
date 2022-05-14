@@ -107,9 +107,14 @@ shared_image_galleries = {
 
 azure_container_registries = {
   acr1 = {
-    name               = "acr001"
-    resource_group_key = "consumption"
-    sku                = "Premium"
+    name                      = "acr001"
+    resource_group_key        = "consumption"
+    sku                       = "Premium"
+    quarantine_policy_enabled = true
+    retention_policy = {
+      days    = 7
+      enabled = true
+    }
     diagnostic_profiles = {
       operations = {
         name             = "acr_logs"

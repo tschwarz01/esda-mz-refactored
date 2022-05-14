@@ -17,11 +17,15 @@ resource "azurerm_container_registry" "acr" {
   tags                = local.tags
 
   public_network_access_enabled = var.public_network_access_enabled
+  quarantine_policy_enabled     = var.quarantine_policy_enabled
+  anonymous_pull_enabled        = var.sku == "Standard" || var.sku == "Premium" ? try(var.anonymous_pull_enabled, false) : false
+  data_endpoint_enabled         = var.sku == "Premium" ? try(var.data_endpoint_enabled, false) : false
+  network_rule_bypass_option    = try(var.network_rule_bypass_option, "None")
 
   dynamic "retention_policy" {
     for_each = try(var.retention_policy, {})
     content {
-      days    = try(var.retention_policy.days_to_retain, null)
+      days    = try(var.retention_policy.days, null)
       enabled = try(var.retention_policy.enabled, null)
     }
   }
