@@ -77,3 +77,25 @@ variable "retention_policy" {
 variable "trust_policy" {
   default = {}
 }
+
+variable "quarantine_policy_enabled" {
+  default = false
+}
+
+variable "anonymous_pull_enabled" {
+  default = false
+}
+
+variable "data_endpoint_enabled" {
+  default = false
+}
+
+variable "network_rule_bypass_option" {
+  type    = string
+  default = "AzureServices"
+
+  validation {
+    condition     = contains(["AzureServices", "None"], var.network_rule_bypass_option)
+    error_message = "Valid values for var: network_rule_bypass_option are (AzureServices, None)."
+  }
+}

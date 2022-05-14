@@ -21,6 +21,10 @@ module "container_registry" {
   retention_policy              = try(each.value.retention_policy, {})
   trust_policy                  = try(each.value.trust_policy, {})
   public_network_access_enabled = try(each.value.public_network_access_enabled, "true")
+  quarantine_policy_enabled     = try(each.value.quarantine_policy_enabled, "false")
+  anonymous_pull_enabled        = try(each.value.anonymous_pull_enabled, null)
+  data_endpoint_enabled         = try(each.value.data_endpoint_enabled, null)
+  network_rule_bypass_option    = try(each.value.network_rule_bypass_option, "None")
 
 }
 
