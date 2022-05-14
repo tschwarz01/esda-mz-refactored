@@ -8,4 +8,5 @@
 - More coherent IAM implementation
 - Add support for IaaS CICD agents 
 - CICD implementation example & documentation
+- **Standards review & QC**
 
