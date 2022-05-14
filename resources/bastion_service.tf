@@ -19,6 +19,9 @@ resource "azurecaf_name" "host" {
 # Ref : https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/bastion_host
 
 resource "azurerm_bastion_host" "host" {
+  depends_on = [
+    module.public_ip_addresses
+  ]
   for_each = try(local.compute.bastion_hosts, {})
 
   name = azurecaf_name.host[each.key].result

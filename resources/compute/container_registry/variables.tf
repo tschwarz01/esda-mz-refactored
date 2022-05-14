@@ -69,3 +69,11 @@ variable "private_dns" {
 variable "public_network_access_enabled" {
   default = "true"
 }
+
+variable "retention_policy" {
+  default = {}
+}
+
+variable "trust_policy" {
+  default = {}
+}

@@ -145,6 +145,7 @@ locals {
     public_ip_addresses                                     = try(var.networking.public_ip_addresses, {})
     public_ip_prefixes                                      = try(var.networking.public_ip_prefixes, {})
     route_tables                                            = try(var.networking.route_tables, {})
+    synapse_privatelink_hubs                                = try(var.networking.synapse_privatelink_hubs, {})
     vhub_peerings                                           = try(var.networking.vhub_peerings, {})
     virtual_hub_connections                                 = try(var.networking.virtual_hub_connections, {})
     virtual_hub_er_gateway_connections                      = try(var.networking.virtual_hub_er_gateway_connections, {})
@@ -163,33 +164,38 @@ locals {
   }
 
   compute = {
-    /*
-    aks_clusters                        = try(var.compute.aks_clusters, {})
-    availability_sets                   = try(var.compute.availability_sets, {})
-    batch_accounts                      = try(var.compute.batch_accounts, {})
-    batch_applications                  = try(var.compute.batch_applications, {})
-    batch_certificates                  = try(var.compute.batch_certificates, {})
-    batch_jobs                          = try(var.compute.batch_jobs, {})
-    batch_pools                         = try(var.compute.batch_pools, {})
-    dedicated_hosts                     = try(var.compute.dedicated_hosts, {})
-    dedicated_host_groups               = try(var.compute.dedicated_host_groups, {})
-    machine_learning_compute_instance   = try(var.compute.machine_learning_compute_instance, {})
-    proximity_placement_groups          = try(var.compute.proximity_placement_groups, {})
-    vmware_clusters                     = try(var.compute.vmware_clusters, {})
-    vmware_private_clouds               = try(var.compute.vmware_private_clouds, {})
-    vmware_express_route_authorizations = try(var.compute.vmware_express_route_authorizations, {})
-    wvd_applications                    = try(var.compute.wvd_applications, {})
-    wvd_application_groups              = try(var.compute.wvd_application_groups, {})
-    wvd_host_pools                      = try(var.compute.wvd_host_pools, {})
-    wvd_workspaces                      = try(var.compute.wvd_workspaces, {})
-    runbooks                            = try(var.compute.runbooks, {})
-    */
     bastion_hosts                                         = try(var.compute.bastion_hosts, {})
     container_groups                                      = try(var.compute.container_groups, {})
     azure_container_registries                            = try(var.compute.azure_container_registries, {})
     virtual_machines                                      = try(var.compute.virtual_machines, {})
     virtual_machine_scale_sets                            = try(var.compute.virtual_machine_scale_sets, {})
     vmss_extensions_custom_script_adf_integration_runtime = try(var.compute.vmss_extensions_custom_script_adf_integration_runtime, {})
+  }
+
+  database = {
+    app_config                         = try(var.database.app_config, {})
+    cosmos_dbs                         = try(var.database.cosmos_dbs, {})
+    cosmosdb_sql_databases             = try(var.database.cosmosdb_sql_databases, {})
+    databricks_workspaces              = try(var.database.databricks_workspaces, {})
+    machine_learning_workspaces        = try(var.database.machine_learning_workspaces, {})
+    mssql_databases                    = try(var.database.mssql_databases, {})
+    mssql_elastic_pools                = try(var.database.mssql_elastic_pools, {})
+    mssql_failover_groups              = try(var.database.mssql_failover_groups, {})
+    mssql_managed_databases            = try(var.database.mssql_managed_databases, {})
+    mssql_managed_databases_backup_ltr = try(var.database.mssql_managed_databases_backup_ltr, {})
+    mssql_managed_databases_restore    = try(var.database.mssql_managed_databases_restore, {})
+    mssql_managed_instances            = try(var.database.mssql_managed_instances, {})
+    mssql_managed_instances_secondary  = try(var.database.mssql_managed_instances_secondary, {})
+    mssql_mi_administrators            = try(var.database.mssql_mi_administrators, {})
+    mssql_mi_failover_groups           = try(var.database.mssql_mi_failover_groups, {})
+    mssql_mi_secondary_tdes            = try(var.database.mssql_mi_secondary_tdes, {})
+    mssql_mi_tdes                      = try(var.database.mssql_mi_tdes, {})
+    mssql_servers                      = try(var.database.mssql_servers, {})
+    mysql_databases                    = try(var.database.mysql_databases, {})
+    mysql_servers                      = try(var.database.mysql_servers, {})
+    postgresql_flexible_servers        = try(var.database.postgresql_flexible_servers, {})
+    postgresql_servers                 = try(var.database.postgresql_servers, {})
+    synapse_workspaces                 = try(var.database.synapse_workspaces, {})
   }
 
   storage = {
