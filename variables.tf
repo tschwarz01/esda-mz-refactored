@@ -159,3 +159,8 @@ variable "virtual_machine_scale_set_extensions" {
 variable "vmss_extensions_custom_script_adf_integration_runtime" {
   default = {}
 }
+
+variable "bastion_hosts" {
+  default = {}
+
+}

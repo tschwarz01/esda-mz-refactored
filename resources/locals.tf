@@ -166,7 +166,6 @@ locals {
     /*
     aks_clusters                        = try(var.compute.aks_clusters, {})
     availability_sets                   = try(var.compute.availability_sets, {})
-    bastion_hosts                       = try(var.compute.bastion_hosts, {})
     batch_accounts                      = try(var.compute.batch_accounts, {})
     batch_applications                  = try(var.compute.batch_applications, {})
     batch_certificates                  = try(var.compute.batch_certificates, {})
@@ -185,6 +184,7 @@ locals {
     wvd_workspaces                      = try(var.compute.wvd_workspaces, {})
     runbooks                            = try(var.compute.runbooks, {})
     */
+    bastion_hosts                                         = try(var.compute.bastion_hosts, {})
     container_groups                                      = try(var.compute.container_groups, {})
     azure_container_registries                            = try(var.compute.azure_container_registries, {})
     virtual_machines                                      = try(var.compute.virtual_machines, {})

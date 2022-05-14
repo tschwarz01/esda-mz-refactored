@@ -21,6 +21,7 @@ module "esa-dmz" {
     virtual_machine_scale_sets                            = var.virtual_machine_scale_sets
     vmss_extensions_custom_script_adf_integration_runtime = var.vmss_extensions_custom_script_adf_integration_runtime
     azure_container_registries                            = var.azure_container_registries
+    bastion_hosts                                         = var.bastion_hosts
   }
 
   data_factory = {
