@@ -1,4 +1,4 @@
-# Enterprise Scale Analytics Scenario
+# Azure Cloud Adoption Framework: Cloud Scale Analytics Scenario
 ## Management Zone
 
 
