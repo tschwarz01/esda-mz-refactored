@@ -2,3 +2,4 @@
 *tfplan
 *.lock.hcl
 .terraform*
+debug.log
