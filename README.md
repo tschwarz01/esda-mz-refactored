@@ -6,6 +6,6 @@
 - Support for Azure VNet Data Gateway
 - Support for Azure Policy.  
 - More coherent IAM implementation
-- ACI DevOps Pipeline Agent works - sometimes.  Haven't been able to figure out why it is transient
-- CICD implementation
+- Add support for IaaS CICD agents 
+- CICD implementation example & documentation
 
