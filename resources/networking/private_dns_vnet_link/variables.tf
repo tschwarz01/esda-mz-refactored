@@ -21,3 +21,7 @@ variable "base_tags" {
 variable "tags" {
   default = {}
 }
+
+variable "private_dns_zones" {
+  default = {}
+}

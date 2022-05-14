@@ -35,9 +35,14 @@ locals {
 }
 
 locals {
-  existing_private_dns = {
+  private_dns_zones = {
     for zone in var.existing_private_dns.dns_zones : zone => {
-      id = "/subscriptions/${var.existing_private_dns.subscription_id}/resourceGroups/${var.existing_private_dns.resource_group_name}/providers/Microsoft.Network/privateDnsZones/${zone}"
+      name                = zone
+      dns_zone_key        = zone
+      region              = var.existing_private_dns.zones_region
+      id                  = "/subscriptions/${var.existing_private_dns.subscription_id}/resourceGroups/${var.existing_private_dns.resource_group_name}/providers/Microsoft.Network/privateDnsZones/${zone}"
+      resource_group_name = var.existing_private_dns.resource_group_name
+      vnet_key            = var.existing_private_dns.local_vnet_key
     }
     if length(regexall("privatelink", zone)) > 0
   }

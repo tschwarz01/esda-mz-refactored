@@ -100,7 +100,7 @@ purview_accounts = {
 shared_image_galleries = {
   gallery1 = {
     name               = "img-gallery"
-    resource_group_key = "consumption"
+    resource_group_key = "governance"
     description        = ""
   }
 }
@@ -108,13 +108,15 @@ shared_image_galleries = {
 azure_container_registries = {
   acr1 = {
     name                      = "acr001"
-    resource_group_key        = "consumption"
+    resource_group_key        = "governance"
     sku                       = "Premium"
     quarantine_policy_enabled = true
+
     retention_policy = {
       days    = 7
       enabled = true
     }
+
     diagnostic_profiles = {
       operations = {
         name             = "acr_logs"
@@ -126,13 +128,19 @@ azure_container_registries = {
     private_endpoints = {
       acr = {
         name               = "acr001"
-        resource_group_key = "consumption"
+        resource_group_key = "governance"
         vnet_key           = "vnet_region1"
         subnet_key         = "private_endpoints"
+
         private_service_connection = {
           name                 = "acr001"
           is_manual_connection = false
           subresource_names    = ["registry"]
+        }
+
+        private_dns = {
+          zone_group_name = "privatelink.acurecr.io"
+          keys            = ["privatelink.acurecr.io"]
         }
       }
     }

@@ -539,23 +539,6 @@ keyvault_access_policies = {
   }
 }
 
-
-existing_private_dns = {
-  subscription_id     = "c00669a2-37e9-4e0d-8b57-4e8dd0fcdd4a"
-  resource_group_name = "rg-scus-pe-lab-network"
-  dns_zones = [
-    "privatelink.blob.core.windows.net",
-    "privatelink.dfs.core.windows.net",
-    "privatelink.queue.core.windows.net",
-    "privatelink.vaultcore.azure.net",
-    "privatelink.datafactory.azure.net",
-    "privatelink.adf.azure.com",
-    "privatelink.purview.azure.com",
-    "privatelink.purviewstudio.azure.com",
-    "privatelink.servicebus.windows.net",
-  ]
-}
-
 diagnostic_log_analytics = {
   central_logs_region1 = {
     region             = "region1"
@@ -642,6 +625,10 @@ diagnostics_definition = {
       log = [
         # ["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
         ["BastionAuditLogs", true, false, 7],
+      ]
+      metric = [
+        #["Category name",  "Diagnostics Enabled(true/false)", "Retention Enabled(true/false)", Retention_period]
+        ["AllMetrics", true, false, 7],
       ]
     }
   }

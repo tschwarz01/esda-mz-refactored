@@ -22,11 +22,12 @@ resource "azurerm_container_registry" "acr" {
   data_endpoint_enabled         = var.sku == "Premium" ? try(var.data_endpoint_enabled, false) : false
   network_rule_bypass_option    = try(var.network_rule_bypass_option, "None")
 
+
   dynamic "retention_policy" {
-    for_each = try(var.retention_policy, {})
+    for_each = try(var.retention_policy, null) != null ? [var.retention_policy] : []
     content {
-      days    = try(var.retention_policy.days, null)
-      enabled = try(var.retention_policy.enabled, null)
+      days    = retention_policy.value.days
+      enabled = retention_policy.value.enabled
     }
   }
 

@@ -24,9 +24,9 @@ output "private_dns" {
 #
 
 module "private_dns_vnet_links" {
-  source     = "./networking/private_dns_vnet_link"
-  for_each   = try(local.networking.private_dns_vnet_links, {})
-  depends_on = [module.private_dns]
+  source   = "./networking/private_dns_vnet_link"
+  for_each = try(local.networking.private_dns_vnet_links, {})
+  #depends_on = [module.private_dns]
 
   base_tags          = {}
   global_settings    = local.global_settings
