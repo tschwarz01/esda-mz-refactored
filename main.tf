@@ -42,6 +42,7 @@ module "esa-dmz" {
     application_security_groups       = var.application_security_groups
     public_ip_addresses               = var.public_ip_addresses
     load_balancers                    = var.load_balancers
+    synapse_privatelink_hubs          = var.synapse_privatelink_hubs
   }
 
   compute = {

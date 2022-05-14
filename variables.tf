@@ -167,3 +167,7 @@ variable "bastion_hosts" {
 variable "shared_image_galleries" {
   default = {}
 }
+
+variable "synapse_privatelink_hubs" {
+  default = {}
+}

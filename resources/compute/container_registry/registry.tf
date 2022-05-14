@@ -18,6 +18,21 @@ resource "azurerm_container_registry" "acr" {
 
   public_network_access_enabled = var.public_network_access_enabled
 
+  dynamic "retention_policy" {
+    for_each = try(var.retention_policy, {})
+    content {
+      days    = try(var.retention_policy.days_to_retain, null)
+      enabled = try(var.retention_policy.enabled, null)
+    }
+  }
+
+  dynamic "trust_policy" {
+    for_each = try(var.trust_policy, {})
+    content {
+      enabled = try(var.trust_policy.enabled, null)
+    }
+  }
+
   dynamic "network_rule_set" {
     for_each = try(var.network_rule_set, {})
 
@@ -51,5 +66,6 @@ resource "azurerm_container_registry" "acr" {
       tags     = try(georeplications.value.tags)
     }
   }
+
 }
 
