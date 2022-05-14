@@ -1,3 +1,69 @@
+public_ip_addresses = {
+  bastion_host = {
+    name                    = "bastion-pip1"
+    resource_group_key      = "sharedservices"
+    sku                     = "Standard"
+    allocation_method       = "Static"
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+  }
+  lb_pip1 = {
+    name               = "lb_pip1"
+    resource_group_key = "integration"
+    sku                = "Basic"
+    # Note: For UltraPerformance ExpressRoute Virtual Network gateway, the associated Public IP needs to be sku "Basic" not "Standard"
+    allocation_method = "Dynamic"
+    # allocation method needs to be Dynamic
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+  }
+}
+
+
+# Application security groups
+application_security_groups = {
+  app_sg1 = {
+    resource_group_key = "integration"
+    name               = "app_sg1"
+
+  }
+}
+
+load_balancers = {
+  lb-vmss = {
+    name                      = "lb-vmss"
+    sku                       = "Basic"
+    resource_group_key        = "integration"
+    backend_address_pool_name = "vmss1"
+    frontend_ip_configurations = {
+      config1 = {
+        name                  = "config1"
+        public_ip_address_key = "lb_pip1"
+      }
+    }
+    probes = {
+      probe1 = {
+        resource_group_key = "integration"
+        load_balancer_key  = "lb-vmss"
+        probe_name         = "rdp"
+        port               = "3389"
+      }
+    }
+    lb_rules = {
+      rule1 = {
+        resource_group_key             = "integration"
+        load_balancer_key              = "lb-vmss"
+        lb_rule_name                   = "rule1"
+        protocol                       = "Tcp"
+        probe_id_key                   = "probe1"
+        frontend_port                  = "3389"
+        backend_port                   = "3389"
+        frontend_ip_configuration_name = "config1" #name must match the configuration that's defined in the load_balancers block.
+      }
+    }
+  }
+}
+
 
 
 virtual_machine_scale_sets = {
@@ -142,5 +208,105 @@ virtual_machine_scale_sets = {
       }
     }
 */
+  }
+}
+
+vmss_extensions_custom_script_adf_integration_runtime = {
+
+  vmssshir1 = {
+    resource_group_key        = "integration"
+    identity_type             = "SystemAssigned" # optional to use managed_identity for download from location specified in fileuri, UserAssigned or SystemAssigned.
+    automatic_upgrade_enabled = false
+
+    integration_runtime_key = "dfirsh1"
+    vmss_key                = "vmssshir"
+    commandtoexecute        = "powershell.exe -ExecutionPolicy Unrestricted -File installSHIRGateway.ps1 -gatewayKey"
+    script_location         = "https://raw.githubusercontent.com/Azure/data-landing-zone/main/code/installSHIRGateway.ps1"
+    #authorization_key       = try(local.combined_objects_data_factory_integration_runtime_self_hosted[each.integration_runtime.key].primary_authorization_key, null)
+  }
+
+}
+
+
+data_factory = {
+  df1 = {
+    name = "adf-int"
+    resource_group = {
+      key = "integration"
+      #lz_key = ""
+      #name = ""
+    }
+    managed_virtual_network_enabled = "true"
+    private_endpoints = {
+      # Require enforce_private_link_endpoint_network_policies set to true on the subnet
+      df1-factory = {
+        name               = "adf-int-acct"
+        vnet_key           = "vnet_region1"
+        subnet_key         = "private_endpoints"
+        resource_group_key = "integration"
+        identity = {
+          type         = "SystemAssigned"
+          identity_ids = []
+        }
+        private_service_connection = {
+          name                 = "adf-int-acct"
+          is_manual_connection = false
+          subresource_names    = ["dataFactory"]
+        }
+        private_dns = {
+          zone_group_name = "privatelink.datafactory.azure.net"
+          # lz_key          = ""   # If the DNS keys are deployed in a remote landingzone
+          keys = ["privatelink.datafactory.azure.net"]
+        }
+      }
+      df1-portal = {
+        name               = "adf-int-portal"
+        vnet_key           = "vnet_region1"
+        subnet_key         = "private_endpoints"
+        resource_group_key = "integration"
+        private_service_connection = {
+          name                 = "adf-int-portal"
+          is_manual_connection = false
+          subresource_names    = ["portal"]
+        }
+        private_dns = {
+          zone_group_name = "privatelink.adf.azure.com"
+          # lz_key          = ""   # If the DNS keys are deployed in a remote landingzone
+          keys = ["privatelink.adf.azure.com"]
+        }
+      }
+    }
+    diagnostic_profiles = {
+      central_logs_region1 = {
+        definition_key   = "azure_data_factory"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
+  }
+}
+
+data_factory_integration_runtime_self_hosted = {
+  dfirsh1 = {
+    name = "adfsharedshir"
+    resource_group = {
+      key = "integration"
+    }
+    data_factory = {
+      key = "df1"
+    }
+  }
+}
+
+
+dynamic_keyvault_secrets = {
+  kv1 = {
+    shirKey = {
+      # this secret is retrieved automatically from the module run output
+      secret_name   = "shir-auth-key"
+      output_key    = "data_factory_integration_runtime_self_hosted"
+      resource_key  = "dfirsh1"
+      attribute_key = "primary_authorization_key"
+    }
   }
 }
