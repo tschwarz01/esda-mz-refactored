@@ -1,9 +1,9 @@
 module "shared_image_galleries" {
-  source   = "./modules/shared_image_gallery/image_galleries"
+  source   = "./shared_image_gallery/image_galleries"
   for_each = try(local.shared_services.shared_image_galleries, {})
 
-  resource_group_name = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group_key, each.value.resource_group.key)].name
-  location            = can(local.global_settings.regions[each.value.region]) ? local.global_settings.regions[each.value.region] : local.combined_objects_resource_groups[try(each.value.resource_group.lz_key, local.client_config.landingzone_key)][try(each.value.resource_group.key, each.value.resource_group_key)].location
+  resource_group_name = can(each.value.resource_group.name) || can(each.value.resource_group_name) ? try(each.value.resource_group.name, each.value.resource_group_name) : local.combined_objects_resource_groups[try(each.value.resource_group_key, each.value.resource_group.key)].name
+  location            = can(local.global_settings.regions[each.value.region]) ? local.global_settings.regions[each.value.region] : local.combined_objects_resource_groups[try(each.value.resource_group.key, each.value.resource_group_key)].location
   diagnostics         = local.diagnostics
   client_config       = local.client_config
   global_settings     = local.global_settings
@@ -15,6 +15,7 @@ module "shared_image_galleries" {
   ]
 }
 
+/*
 module "image_definitions" {
   source   = "./modules/shared_image_gallery/image_definitions"
   for_each = try(local.shared_services.image_definitions, {})
@@ -34,7 +35,6 @@ output "image_definitions" {
   value = module.image_definitions
 }
 
-/*
 module "packer_service_principal" {
   source   = "./modules/shared_image_gallery/packer_service_principal"
   for_each = try(local.shared_services.packer_service_principal, {})

@@ -43,4 +43,8 @@ module "esa-dmz" {
     diagnostics_definition      = var.diagnostics_definition
     diagnostic_storage_accounts = var.diagnostic_storage_accounts
   }
+
+  shared_services = {
+    shared_image_galleries = var.shared_image_galleries
+  }
 }

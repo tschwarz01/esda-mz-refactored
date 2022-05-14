@@ -162,5 +162,8 @@ variable "vmss_extensions_custom_script_adf_integration_runtime" {
 
 variable "bastion_hosts" {
   default = {}
+}
 
+variable "shared_image_galleries" {
+  default = {}
 }
