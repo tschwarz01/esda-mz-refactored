@@ -3,3 +3,6 @@
 *.lock.hcl
 .terraform*
 debug.log
+resources
+resources/*
+./resources
