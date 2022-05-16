@@ -18,6 +18,7 @@ provider "azurerm" {
   features {
     key_vault {
       purge_soft_delete_on_destroy = true
+      #prevent_deletion_if_contains_resources = false
     }
   }
 }
@@ -75,5 +76,9 @@ module "esa-dmz" {
 
   shared_services = {
     shared_image_galleries = var.shared_image_galleries
+  }
+
+  security = {
+    dynamic_keyvault_secrets = var.dynamic_keyvault_secrets
   }
 }
