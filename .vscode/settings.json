@@ -1,0 +1,11 @@
+{
+    "azapi.languageServer": {
+    
+        "external": true,
+        "pathToBinary": "",
+        "args": [
+            "serve"
+        ],
+        "trace.server": "off"
+    }
+}
