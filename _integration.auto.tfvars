@@ -1,82 +1,3 @@
-diagnostic_storage_accounts = {
-  # Stores boot diagnostic for region1
-  bootdiag1 = {
-    name                     = "bootdiag1"
-    resource_group_key       = "integration"
-    account_kind             = "StorageV2"
-    account_tier             = "Standard"
-    account_replication_type = "LRS"
-    access_tier              = "Hot"
-  }
-}
-
-public_ip_addresses = {
-  bastion_host = {
-    name                    = "bastion-pip1"
-    resource_group_key      = "sharedservices"
-    sku                     = "Standard"
-    allocation_method       = "Static"
-    ip_version              = "IPv4"
-    idle_timeout_in_minutes = "4"
-  }
-  lb_pip1 = {
-    name               = "lb_pip1"
-    resource_group_key = "integration"
-    sku                = "Basic"
-    # Note: For UltraPerformance ExpressRoute Virtual Network gateway, the associated Public IP needs to be sku "Basic" not "Standard"
-    allocation_method = "Dynamic"
-    # allocation method needs to be Dynamic
-    ip_version              = "IPv4"
-    idle_timeout_in_minutes = "4"
-  }
-}
-
-
-# Application security groups
-application_security_groups = {
-  app_sg1 = {
-    resource_group_key = "integration"
-    name               = "app_sg1"
-
-  }
-}
-
-load_balancers = {
-  lb-vmss = {
-    name                      = "lb-vmss"
-    sku                       = "Basic"
-    resource_group_key        = "integration"
-    backend_address_pool_name = "vmss1"
-    frontend_ip_configurations = {
-      config1 = {
-        name                  = "config1"
-        public_ip_address_key = "lb_pip1"
-      }
-    }
-    probes = {
-      probe1 = {
-        resource_group_key = "integration"
-        load_balancer_key  = "lb-vmss"
-        probe_name         = "rdp"
-        port               = "3389"
-      }
-    }
-    lb_rules = {
-      rule1 = {
-        resource_group_key             = "integration"
-        load_balancer_key              = "lb-vmss"
-        lb_rule_name                   = "rule1"
-        protocol                       = "Tcp"
-        probe_id_key                   = "probe1"
-        frontend_port                  = "3389"
-        backend_port                   = "3389"
-        frontend_ip_configuration_name = "config1" #name must match the configuration that's defined in the load_balancers block.
-      }
-    }
-  }
-}
-
-
 
 virtual_machine_scale_sets = {
   vmssshir = {
@@ -97,17 +18,15 @@ virtual_machine_scale_sets = {
         priority                        = "Spot"
         eviction_policy                 = "Deallocate"
         upgrade_mode                    = "Automatic" # Automatic / Rolling / Manual
-        #custom_data                     = "scripts/installSHIRGateway.ps1"
+        #custom_data                     = null
 
         rolling_upgrade_policy = {
-          #   # Only for upgrade mode = "Automatic / Rolling "
           max_batch_instance_percent              = 60
           max_unhealthy_instance_percent          = 60
           max_unhealthy_upgraded_instance_percent = 60
           pause_time_between_batches              = "PT01M"
         }
         automatic_os_upgrade_policy = {
-          # Only for upgrade mode = "Automatic"
           disable_automatic_rollback  = false
           enable_automatic_os_upgrade = false
         }
@@ -118,7 +37,6 @@ virtual_machine_scale_sets = {
           disk_size_gb         = 128
         }
 
-        # Uncomment in case the managed_identity_keys are generated locally
         identity = {
           type                  = "UserAssigned"
           managed_identity_keys = ["vmssadf"]
@@ -136,23 +54,20 @@ virtual_machine_scale_sets = {
           grace_period = "PT30M" # Use ISO8601 expressions.
         }
 
-        # The health is determined by an exising loadbalancer probe.
         health_probe = {
           loadbalancer_key = "lb-vmss"
           probe_key        = "probe1"
         }
-
       }
     }
 
     network_interfaces = {
       nic0 = {
-        # Value of the keys from networking.tfvars
         name       = "0"
         primary    = true
         vnet_key   = "vnet_region1"
         subnet_key = "services"
-        #subnet_id  = "/subscriptions/97958dac-XXXX-XXXX-XXXX-9f436fa73bd4/resourceGroups/xbvt-rg-vmss-agw-exmp-rg/providers/Microsoft.Network/virtualNetworks/xbvt-vnet-vmss/subnets/xbvt-snet-compute"
+        #subnet_id  = 
 
         enable_accelerated_networking = false
         enable_ip_forwarding          = false
@@ -171,55 +86,8 @@ virtual_machine_scale_sets = {
         }
       }
     }
-    ultra_ssd_enabled = false # required if planning to use UltraSSD_LRS
-
-
-
-    /*
-    virtual_machine_scale_set_extensions = {
-      data_factory_self_hosted_integration_runtime = {
-        self_hosted_integration_runtime_auth_key = null
-
-        # Key Vault & secret name where the Self-Hosted Integration Runtime authorization key is stored
-        vault_settings = {
-          secret_name  = "shir-auth-key"
-          key_vault_id = null
-          lz_key       = "examples"
-          keyvault_key = "kv1"
-        }
-
-        identity_type             = "UserAssigned" # optional to use managed_identity for download from location specified in fileuri, UserAssigned or SystemAssigned.
-        managed_identity_key      = "vmssadf"
-        automatic_upgrade_enabled = false
-
-        #########################
-        #  base_command_to_execute is used in conjunction with a Self-Hosted Integration Runtime authorization key
-        #  retrieved from Azure Key Vault using the vault_settings parameters
-        #########################
-        base_command_to_execute = "powershell.exe -ExecutionPolicy Unrestricted -File installSHIRGateway.ps1 -gatewayKey"
-        #base_command_to_execute   = "powershell.exe -ExecutionPolicy Unrestricted -NoProfile -NonInteractive -command"
-
-
-        #########################
-        #  command_override supercedes base_command_to_execute, allowing
-        #  the Self-Hosted Integration Runtime authorization key to be defined inline
-        #  or alternative logic implemented
-        #########################
-        #command_override = "powershell.exe -File C:/pathTo/script.ps1"
-
-
-        #########################
-        # You can define fileuris directly or use fileuri_sa reference keys and lz_key:
-        #########################
-        fileuris = ["https://raw.githubusercontent.com/Azure/data-landing-zone/main/code/installSHIRGateway.ps1"]
-        #fileuri_sa_key          = "sa1"
-        #fileuri_sa_path         = "files/installSHIRGateway.ps1"
-        #lz_key                    = "examples"
-        # managed_identity_id       = "id" # optional to define managed identity principal_id directly
-        # lz_key                    = "other_lz" # optional for managed identity defined in other lz
-      }
-    }
-*/
+    ultra_ssd_enabled = false
+    /**/
   }
 }
 
@@ -306,40 +174,6 @@ data_factory_integration_runtime_self_hosted = {
     }
     data_factory = {
       key = "df1"
-    }
-  }
-}
-
-
-dynamic_keyvault_secrets = {
-  kv1 = {
-    shirKey = {
-      # this secret is retrieved automatically from the module run output
-      secret_name   = "shir-auth-key"
-      output_key    = "data_factory_integration_runtime_self_hosted"
-      resource_key  = "dfirsh1"
-      attribute_key = "primary_authorization_key"
-    }
-  }
-}
-
-
-bastion_hosts = {
-  bastion_hub = {
-    name               = "bastion-001"
-    region             = "region1"
-    resource_group_key = "sharedservices"
-    vnet_key           = "vnet_region1"
-    subnet_key         = "bastion"
-    public_ip_key      = "bastion_host"
-
-    # you can setup up to 5 profiles
-    diagnostic_profiles = {
-      operations = {
-        definition_key   = "bastion_host"
-        destination_type = "log_analytics"
-        destination_key  = "central_logs"
-      }
     }
   }
 }

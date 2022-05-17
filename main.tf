@@ -18,14 +18,14 @@ provider "azurerm" {
   features {
     key_vault {
       purge_soft_delete_on_destroy = true
-      #prevent_deletion_if_contains_resources = false
+    }
+    resource_group {
+      prevent_deletion_if_contains_resources = false
     }
   }
 }
 
 data "azurerm_client_config" "default" {}
-
-
 
 module "esa-dmz" {
   source                   = "./resources"
@@ -82,4 +82,3 @@ module "esa-dmz" {
     dynamic_keyvault_secrets = var.dynamic_keyvault_secrets
   }
 }
-

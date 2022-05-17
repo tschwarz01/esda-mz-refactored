@@ -68,24 +68,23 @@ resource_groups = {
 }
 
 
-
 vnets = {
   vnet_region1 = {
     resource_group_key = "network"
     vnet = {
       name          = "dmlz-networking"
-      address_space = ["10.50.0.0/21"]
+      address_space = ["10.73.0.0/21"]
     }
     subnets = {
       cicd = {
         name          = "cicd-iaas-agents-subnet"
-        cidr          = ["10.50.0.128/26"]
+        cidr          = ["10.73.0.128/26"]
         should_create = true
         nsg_key       = "empty_nsg"
       }
       aci = {
         name          = "aci"
-        cidr          = ["10.50.0.192/26"]
+        cidr          = ["10.73.0.192/26"]
         should_create = true
         nsg_key       = "empty_nsg"
         delegation = {
@@ -98,21 +97,21 @@ vnets = {
       }
       services = {
         name              = "services"
-        cidr              = ["10.50.1.0/24"]
+        cidr              = ["10.73.1.0/24"]
         service_endpoints = ["Microsoft.KeyVault"]
         should_create     = true
         nsg_key           = "empty_nsg"
       }
       private_endpoints = {
         name                                           = "private-endpoints"
-        cidr                                           = ["10.50.6.0/24"]
+        cidr                                           = ["10.73.6.0/24"]
         enforce_private_link_endpoint_network_policies = true
         should_create                                  = true
         nsg_key                                        = "empty_nsg"
       }
       bastion = {
         name          = "AzureBastionSubnet"
-        cidr          = ["10.50.2.0/25"]
+        cidr          = ["10.73.2.0/25"]
         should_create = true
         nsg_key       = "azure_bastion_nsg"
       }
@@ -120,30 +119,15 @@ vnets = {
     special_subnets = {
       AzureFirewallSubnet = {
         name          = "AzureFirewallSubnet" # must be named AzureFirewallSubnet
-        cidr          = ["10.50.0.0/26"]
+        cidr          = ["10.73.0.0/26"]
         should_create = true
       }
       GatewaySubnet = {
         name          = "GatewaySubnet" # must be named GatewaySubnet
-        cidr          = ["10.50.0.64/26"]
+        cidr          = ["10.73.0.64/26"]
         should_create = false
       }
     }
-    /*
-    datagateway = {
-      name          = "gatewaysubnet"
-      cidr          = ["10.50.2.128/26"]
-      should_create = true
-      nsg_key       = "empty_nsg"
-      delegation = {
-        name               = "power_platform_data_gateway"
-        service_delegation = "Microsoft.PowerPlatform/vnetaccesslinks"
-        actions = [
-          "Microsoft.Network/virtualNetworks/subnets/action"
-        ]
-      }
-    }
-    */
     diagnostic_profiles = {
       operation = {
         definition_key   = "networking_all"
@@ -156,7 +140,7 @@ vnets = {
 
 vnet_peerings_v1 = {
   dmlz_to_hub = {
-    name = "dmlz_to_scus_connectivity_hub"
+    name = "dmlz_to_region1_connectivity_hub"
     from = {
       vnet_key = "vnet_region1"
     }
@@ -169,7 +153,7 @@ vnet_peerings_v1 = {
     use_remote_gateways          = false
   }
   hub_to_dmlz = {
-    name = "scus_connectivity_hub_to_dmlz"
+    name = "region1_connectivity_hub_to_dmlz"
     from = {
       id = "/subscriptions/893395a4-65a3-4525-99ea-2378c6e0dbed/resourceGroups/rg-network_connectivity_hub/providers/Microsoft.Network/virtualNetworks/vnet-connectivity_hub"
     }
@@ -180,6 +164,80 @@ vnet_peerings_v1 = {
     allow_forwarded_traffic      = true
     allow_gateway_transit        = false
     use_remote_gateways          = false
+  }
+}
+
+public_ip_addresses = {
+  bastion_host = {
+    name                    = "bastion-pip1"
+    resource_group_key      = "sharedservices"
+    sku                     = "Standard"
+    allocation_method       = "Static"
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+  }
+  lb_pip1 = {
+    name                    = "lb_pip1"
+    resource_group_key      = "integration"
+    sku                     = "Basic"
+    allocation_method       = "Dynamic"
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+  }
+}
+
+load_balancers = {
+  lb-vmss = {
+    name                      = "lb-vmss"
+    sku                       = "Basic"
+    resource_group_key        = "integration"
+    backend_address_pool_name = "vmss1"
+    frontend_ip_configurations = {
+      config1 = {
+        name                  = "config1"
+        public_ip_address_key = "lb_pip1"
+      }
+    }
+    probes = {
+      probe1 = {
+        resource_group_key = "integration"
+        load_balancer_key  = "lb-vmss"
+        probe_name         = "rdp"
+        port               = "3389"
+      }
+    }
+    lb_rules = {
+      rule1 = {
+        resource_group_key             = "integration"
+        load_balancer_key              = "lb-vmss"
+        lb_rule_name                   = "rule1"
+        protocol                       = "Tcp"
+        probe_id_key                   = "probe1"
+        frontend_port                  = "3389"
+        backend_port                   = "3389"
+        frontend_ip_configuration_name = "config1" #name must match the configuration that's defined in the load_balancers block.
+      }
+    }
+  }
+}
+
+bastion_hosts = {
+  bastion_hub = {
+    name               = "bastion-001"
+    region             = "region1"
+    resource_group_key = "sharedservices"
+    vnet_key           = "vnet_region1"
+    subnet_key         = "bastion"
+    public_ip_key      = "bastion_host"
+
+    # you can setup up to 5 profiles
+    diagnostic_profiles = {
+      operations = {
+        definition_key   = "bastion_host"
+        destination_type = "log_analytics"
+        destination_key  = "central_logs"
+      }
+    }
   }
 }
 
@@ -314,112 +372,6 @@ network_security_group_definition = {
       }
     ]
   }
-
-  empty_nsg = {
-    resource_group_key = "vnet_region1"
-    name               = "empty_nsg"
-    nsg                = []
-  }
-}
-
-keyvaults = {
-  kv1 = {
-    name               = "integration"
-    resource_group_key = "integration"
-    sku_name           = "standard"
-    #enable_rbac_authorization = true
-    soft_delete_enabled      = true
-    purge_protection_enabled = true
-    creation_policies = {
-      object_id = {
-        object_id               = "6405df78-1204-44e2-b0d2-6666c8d83f71"
-        certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Purge", "Recover", "GetIssuers", "SetIssuers", "ListIssuers", "DeleteIssuers", "ManageIssuers", "Restore", "ManageContacts"]
-        secret_permissions      = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-      }
-      object_id = {
-        object_id               = "dad82215-068b-4f31-8a4c-84a6333b6df8"
-        certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Purge", "Recover", "GetIssuers", "SetIssuers", "ListIssuers", "DeleteIssuers", "ManageIssuers", "Restore", "ManageContacts"]
-        secret_permissions      = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-      }
-    }
-    diagnostic_profiles = {
-      central_logs_region1 = {
-        definition_key   = "azure_key_vault"
-        destination_type = "log_analytics"
-        destination_key  = "central_logs"
-      }
-    }
-    private_endpoints = {
-      vault = {
-        name               = "vault"
-        resource_group_key = "integration"
-        vnet_key           = "vnet_region1"
-        subnet_key         = "private_endpoints"
-        private_service_connection = {
-          name                 = "vault"
-          is_manual_connection = false
-          subresource_names    = ["vault"]
-        }
-        private_dns = {
-          zone_group_name = "default"
-          keys            = ["privatelink.vaultcore.azure.net"]
-        }
-      }
-    }
-  }
-  kv2 = {
-    name                      = "kv-governance"
-    resource_group_key        = "governance"
-    sku_name                  = "standard"
-    enable_rbac_authorization = true
-    soft_delete_enabled       = true
-    purge_protection_enabled  = true
-    network = {
-      default_action = "Deny"
-      bypass         = "AzureServices"
-      ip_rules       = []
-      subnets = {
-        servicesSubnetName = {
-          vnet_key   = "vnet_region1"
-          subnet_key = "services"
-        }
-      }
-    }
-    diagnostic_profiles = {
-      central_logs_region1 = {
-        definition_key   = "azure_key_vault"
-        destination_type = "log_analytics"
-        destination_key  = "central_logs"
-      }
-    }
-    private_endpoints = {
-      vault = {
-        name               = "vault"
-        resource_group_key = "governance"
-        vnet_key           = "vnet_region1"
-        subnet_key         = "private_endpoints"
-        private_service_connection = {
-          name                 = "vault"
-          is_manual_connection = false
-          subresource_names    = ["vault"]
-        }
-        private_dns = {
-          zone_group_name = "default"
-          keys            = ["privatelink.vaultcore.azure.net"]
-        }
-      }
-    }
-  }
-}
-
-keyvault_access_policies = {
-  kv1 = {
-    object_id = {
-      object_id               = "6405df78-1204-44e2-b0d2-6666c8d83f71"
-      certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Purge", "Recover", "GetIssuers", "SetIssuers", "ListIssuers", "DeleteIssuers", "ManageIssuers", "Restore", "ManageContacts"]
-      secret_permissions      = ["Set", "Get", "List", "Delete", "Purge", "Recover"]
-    }
-  }
 }
 
 diagnostic_log_analytics = {
@@ -457,6 +409,17 @@ diagnostic_log_analytics = {
         "product"   = "OMSGallery/KeyVaultAnalytics"
       }
     }
+  }
+}
+
+diagnostic_storage_accounts = {
+  bootdiag1 = {
+    name                     = "bootdiag1"
+    resource_group_key       = "integration"
+    account_kind             = "StorageV2"
+    account_tier             = "Standard"
+    account_replication_type = "LRS"
+    access_tier              = "Hot"
   }
 }
 
@@ -812,13 +775,6 @@ diagnostics_definition = {
         ["Recommendation", false],
       ]
     }
-  }
-}
-
-managed_identities = {
-  vmssadf = {
-    name               = "vmssadf"
-    resource_group_key = "integration"
   }
 }
 
