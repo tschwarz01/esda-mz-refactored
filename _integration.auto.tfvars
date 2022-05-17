@@ -11,13 +11,13 @@ virtual_machine_scale_sets = {
       windows = {
         name                            = "win"
         computer_name_prefix            = "win"
-        sku                             = "Standard_F2"
+        sku                             = "Standard_D4d_v4"
         instances                       = 2
         admin_username                  = "adminuser"
         disable_password_authentication = false
-        priority                        = "Spot"
-        eviction_policy                 = "Deallocate"
         upgrade_mode                    = "Automatic" # Automatic / Rolling / Manual
+        priority                        = "Spot"
+        #eviction_policy                 = "Deallocate"
         #custom_data                     = null
 
         rolling_upgrade_policy = {

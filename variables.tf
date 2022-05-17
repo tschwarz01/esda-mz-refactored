@@ -99,9 +99,12 @@ variable "log_analytics" {
   default     = {}
 }
 
+variable "private_dns" {
+  default = {}
+}
+
 variable "existing_private_dns" {
   default = {}
-
 }
 
 variable "data_factory" {
