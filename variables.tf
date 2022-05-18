@@ -107,6 +107,10 @@ variable "existing_private_dns" {
   default = {}
 }
 
+variable "private_dns_vnet_links" {
+  default = {}
+}
+
 variable "data_factory" {
   default = {}
 }

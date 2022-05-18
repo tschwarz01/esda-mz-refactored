@@ -3,9 +3,7 @@ output "existing_dns" {
   value = local.existing_private_dns
 }
 
-output "combined_dns_root" {
-  value = module.esa-dmz.combined_dns
-}
+
 
 
 output "vaultcore" {
@@ -16,4 +14,12 @@ output "vaultcore" {
 output "adf" {
   value = module.esa-dmz.data_factory
 }
+
+output "vnetlinks" {
+  value = module.esa-dmz.private_dns_vnet_links
+}
 */
+
+output "priv_dns" {
+  value = module.esa-dmz.private_dns
+}

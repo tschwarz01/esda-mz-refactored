@@ -6,6 +6,7 @@
 
 ### Requires:
 - 'resources' helper module
+
 from project root:  
 
 `git clone https://github.com/tschwarz01/terraform-custom-caf-module.git resources`
