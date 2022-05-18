@@ -9,15 +9,15 @@ virtual_machine_scale_sets = {
 
     vmss_settings = {
       windows = {
-        name                            = "win"
-        computer_name_prefix            = "win"
+        name                            = "shir"
+        computer_name_prefix            = "shir"
         sku                             = "Standard_D4d_v4"
         instances                       = 2
         admin_username                  = "adminuser"
         disable_password_authentication = false
         upgrade_mode                    = "Automatic" # Automatic / Rolling / Manual
         priority                        = "Spot"
-        #eviction_policy                 = "Deallocate"
+        eviction_policy                 = "Deallocate"
         #custom_data                     = null
 
         rolling_upgrade_policy = {
@@ -87,7 +87,6 @@ virtual_machine_scale_sets = {
       }
     }
     ultra_ssd_enabled = false
-    /**/
   }
 }
 

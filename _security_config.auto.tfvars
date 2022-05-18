@@ -29,7 +29,7 @@ dynamic_keyvault_secrets = {
 
 keyvaults = {
   kv1 = {
-    name               = "dmzintegration73"
+    name               = "dmzintegration12"
     resource_group_key = "integration"
     sku_name           = "standard"
     #enable_rbac_authorization = true
@@ -51,12 +51,12 @@ keyvaults = {
     }
     private_endpoints = {
       vault = {
-        name               = "dmzintvault"
+        name               = "dmzint"
         resource_group_key = "integration"
         vnet_key           = "vnet_region1"
         subnet_key         = "private_endpoints"
         private_service_connection = {
-          name                 = "dmzintvault"
+          name                 = "dmzint"
           is_manual_connection = false
           subresource_names    = ["vault"]
         }
@@ -68,7 +68,7 @@ keyvaults = {
     }
   }
   kv2 = {
-    name                      = "dmzgovernance73"
+    name                      = "dmzgovernance12"
     resource_group_key        = "governance"
     sku_name                  = "standard"
     enable_rbac_authorization = true
@@ -94,12 +94,12 @@ keyvaults = {
     }
     private_endpoints = {
       vault = {
-        name               = "dmzgovvault"
+        name               = "dmzgovernance"
         resource_group_key = "governance"
         vnet_key           = "vnet_region1"
         subnet_key         = "private_endpoints"
         private_service_connection = {
-          name                 = "dmzgovvault"
+          name                 = "dmzgovernance"
           is_manual_connection = false
           subresource_names    = ["vault"]
         }
