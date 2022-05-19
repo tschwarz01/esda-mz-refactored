@@ -44,7 +44,7 @@ module "esa-dmz" {
     public_ip_addresses               = var.public_ip_addresses
     load_balancers                    = var.load_balancers
     synapse_privatelink_hubs          = var.synapse_privatelink_hubs
-    private_dns                       = var.private_dns.zones
+    private_dns                       = try(var.private_dns.zones, {})
     private_dns_vnet_links            = local.remote_private_dns_vnet_links
   }
 
@@ -65,7 +65,7 @@ module "esa-dmz" {
   }
 
   remote_objects = {
-    #    private_dns            = local.remote_private_dns_zones
+    private_dns = local.remote_private_dns_zones
     # private_dns_vnet_links = local.remote_private_dns_vnet_links
   }
 

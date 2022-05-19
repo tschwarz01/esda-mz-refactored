@@ -134,8 +134,7 @@ data_factory = {
         }
         private_dns = {
           zone_group_name = "privatelink.datafactory.azure.net"
-          # lz_key          = ""   # If the DNS keys are deployed in a remote landingzone
-          keys = ["privatelink.datafactory.azure.net"]
+          keys            = ["privatelink.datafactory.azure.net"]
         }
       }
       df1-portal = {
@@ -150,8 +149,7 @@ data_factory = {
         }
         private_dns = {
           zone_group_name = "privatelink.adf.azure.com"
-          # lz_key          = ""   # If the DNS keys are deployed in a remote landingzone
-          keys = ["privatelink.adf.azure.com"]
+          keys            = ["privatelink.adf.azure.com"]
         }
       }
     }

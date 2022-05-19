@@ -18,8 +18,23 @@ output "adf" {
 output "vnetlinks" {
   value = module.esa-dmz.private_dns_vnet_links
 }
+
+output "pv" {
+  value = module.esa-dmz.purview_accounts
+}
+
+
 */
 
-output "priv_dns" {
-  value = module.esa-dmz.private_dns
+output "combinedobjectsprivatedns" {
+  value = module.esa-dmz.copdns
+}
+
+output "acrdns" {
+  value = module.esa-dmz.copdns["privatelink.azurecr.io"]
+}
+
+output "acr" {
+  value = module.esa-dmz.azure_container_registries
+
 }

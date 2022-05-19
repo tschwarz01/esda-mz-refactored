@@ -107,10 +107,11 @@ shared_image_galleries = {
 
 azure_container_registries = {
   acr1 = {
-    name                      = "acr001"
-    resource_group_key        = "governance"
-    sku                       = "Premium"
-    quarantine_policy_enabled = true
+    name                          = "acr001"
+    resource_group_key            = "governance"
+    sku                           = "Premium"
+    quarantine_policy_enabled     = true
+    public_network_access_enabled = false
 
     retention_policy = {
       days    = 7
@@ -128,18 +129,21 @@ azure_container_registries = {
     private_endpoints = {
       acr = {
         name               = "acr001"
-        resource_group_key = "governance"
         vnet_key           = "vnet_region1"
         subnet_key         = "private_endpoints"
+        resource_group_key = "governance"
+        identity = {
+          type         = "SystemAssigned"
+          identity_ids = []
+        }
 
         private_service_connection = {
-          name                 = "acr001"
+          name                 = "acr0031"
           is_manual_connection = false
           subresource_names    = ["registry"]
         }
-
         private_dns = {
-          zone_group_name = "privatelink.acurecr.io"
+          zone_group_name = "default"
           keys            = ["privatelink.acurecr.io"]
         }
       }

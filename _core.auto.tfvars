@@ -805,7 +805,7 @@ existing_private_dns = {
 
 # need to uncomment below if intent is to create local private dns zones
 # private_dns will create the specified zones in the management zone (current template) subscription
-/*private_dns = {
+private_dns = {
   create_private_dns_zones_in_data_management_zone = false
   zones = {
     "privatelink.azurewebsites.net" = {
@@ -830,4 +830,3 @@ existing_private_dns = {
     }
   }
 }
-*/

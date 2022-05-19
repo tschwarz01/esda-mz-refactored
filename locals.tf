@@ -41,6 +41,7 @@ locals {
       dns_zone_key        = zone
       region              = var.existing_private_dns.zones_region
       zone_id             = "/subscriptions/${var.existing_private_dns.subscription_id}/resourceGroups/${var.existing_private_dns.resource_group_name}/providers/Microsoft.Network/privateDnsZones/${zone}"
+      id                  = "/subscriptions/${var.existing_private_dns.subscription_id}/resourceGroups/${var.existing_private_dns.resource_group_name}/providers/Microsoft.Network/privateDnsZones/${zone}"
       resource_group_name = var.existing_private_dns.resource_group_name
       vnet_key            = var.existing_private_dns.local_vnet_key
     }
@@ -52,8 +53,11 @@ locals {
     for zone in var.existing_private_dns.dns_zones : zone => {
       name     = zone
       zone_id  = "/subscriptions/${var.existing_private_dns.subscription_id}/resourceGroups/${var.existing_private_dns.resource_group_name}/providers/Microsoft.Network/privateDnsZones/${zone}"
+      id       = "/subscriptions/${var.existing_private_dns.subscription_id}/resourceGroups/${var.existing_private_dns.resource_group_name}/providers/Microsoft.Network/privateDnsZones/${zone}"
       vnet_key = var.existing_private_dns.local_vnet_key
     }
   }
 }
+
+###
 
