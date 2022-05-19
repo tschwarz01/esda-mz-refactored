@@ -73,18 +73,18 @@ vnets = {
     resource_group_key = "network"
     vnet = {
       name          = "dmlz-networking"
-      address_space = ["10.12.0.0/21"]
+      address_space = ["10.11.0.0/21"]
     }
     subnets = {
       cicd = {
         name          = "cicd-iaas-agents-subnet"
-        cidr          = ["10.12.0.128/26"]
+        cidr          = ["10.11.0.128/26"]
         should_create = true
         nsg_key       = "empty_nsg"
       }
       aci = {
         name          = "aci"
-        cidr          = ["10.12.0.192/26"]
+        cidr          = ["10.11.0.192/26"]
         should_create = true
         nsg_key       = "empty_nsg"
         delegation = {
@@ -97,21 +97,21 @@ vnets = {
       }
       services = {
         name              = "services"
-        cidr              = ["10.12.1.0/24"]
+        cidr              = ["10.11.1.0/24"]
         service_endpoints = ["Microsoft.KeyVault"]
         should_create     = true
         nsg_key           = "empty_nsg"
       }
       private_endpoints = {
         name                                           = "private-endpoints"
-        cidr                                           = ["10.12.6.0/24"]
+        cidr                                           = ["10.11.6.0/24"]
         enforce_private_link_endpoint_network_policies = true
         should_create                                  = true
         nsg_key                                        = "empty_nsg"
       }
       bastion = {
         name          = "AzureBastionSubnet"
-        cidr          = ["10.12.2.0/25"]
+        cidr          = ["10.11.2.0/25"]
         should_create = true
         nsg_key       = "azure_bastion_nsg"
       }
@@ -119,12 +119,12 @@ vnets = {
     special_subnets = {
       AzureFirewallSubnet = {
         name          = "AzureFirewallSubnet" # must be named AzureFirewallSubnet
-        cidr          = ["10.12.0.0/26"]
+        cidr          = ["10.11.0.0/26"]
         should_create = true
       }
       GatewaySubnet = {
         name          = "GatewaySubnet" # must be named GatewaySubnet
-        cidr          = ["10.12.0.64/26"]
+        cidr          = ["10.11.0.64/26"]
         should_create = false
       }
     }

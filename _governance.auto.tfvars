@@ -107,7 +107,7 @@ shared_image_galleries = {
 
 azure_container_registries = {
   acr1 = {
-    name                          = "acr001"
+    name                          = "acr005"
     resource_group_key            = "governance"
     sku                           = "Premium"
     quarantine_policy_enabled     = true
@@ -143,8 +143,8 @@ azure_container_registries = {
           subresource_names    = ["registry"]
         }
         private_dns = {
-          zone_group_name = "default"
-          keys            = ["privatelink.acurecr.io"]
+          zone_group_name = "privatelink.azurecr.io"
+          keys            = ["privatelink.azurecr.io"]
         }
       }
     }

@@ -29,12 +29,12 @@ dynamic_keyvault_secrets = {
 
 keyvaults = {
   kv1 = {
-    name               = "dmzintegration12"
+    name               = "dmzintegration11"
     resource_group_key = "integration"
     sku_name           = "standard"
     #enable_rbac_authorization = true
     soft_delete_enabled      = true
-    purge_protection_enabled = true
+    purge_protection_enabled = false
     creation_policies = {
       object_id = {
         object_id               = "6405df78-1204-44e2-b0d2-6666c8d83f71"
@@ -68,12 +68,12 @@ keyvaults = {
     }
   }
   kv2 = {
-    name                      = "dmzgovernance12"
+    name                      = "dmzgovernance11"
     resource_group_key        = "governance"
     sku_name                  = "standard"
     enable_rbac_authorization = true
     soft_delete_enabled       = true
-    purge_protection_enabled  = true
+    purge_protection_enabled  = false
     network = {
       default_action = "Deny"
       bypass         = "AzureServices"
