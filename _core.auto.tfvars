@@ -287,7 +287,7 @@ network_security_group_definition = {
     version            = 1
     resource_group_key = "network"
     name               = "empty_nsg"
-
+    /*
     flow_logs = {
       version = 2
       enabled = true
@@ -304,6 +304,7 @@ network_security_group_definition = {
         interval_in_minutes                 = "10"
       }
     }
+    */
     diagnostic_profiles = {
       nsg = {
         definition_key   = "network_security_group"

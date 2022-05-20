@@ -28,7 +28,8 @@ provider "azurerm" {
 data "azurerm_client_config" "default" {}
 
 module "esa-dmz" {
-  source                   = "./resources"
+  #source                   = "./resources"
+  source                   = "github.com/tschwarz01/terraform-custom-caf-module"
   global_settings          = var.global_settings
   common_module_params     = local.common_module_params
   resource_groups          = var.resource_groups
