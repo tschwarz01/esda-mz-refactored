@@ -106,7 +106,9 @@ variable "private_dns" {
 variable "existing_private_dns" {
   default = {}
 }
-
+variable "network_watchers" {
+  default = {}
+}
 variable "private_dns_vnet_links" {
   default = {}
 }

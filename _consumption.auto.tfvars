@@ -1,3 +1,4 @@
+# Used for establish private network connectivity to the Azure Synapse web studio @ web.azuresynapse.net 
 synapse_privatelink_hubs = {
   plh1 = {
     name               = "synplh"
@@ -22,5 +23,5 @@ synapse_privatelink_hubs = {
         }
       }
     }
-  }
+  } # The resource type 'microsoft.synapse/privatelinkhubs' does not support diagnostic settings.
 }
