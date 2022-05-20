@@ -12,7 +12,6 @@ from project root:
 `git clone https://github.com/tschwarz01/terraform-custom-caf-module.git resources`
 
 ### Needs: 
-- Support for Azure VNet Data Gateway:  this will likely need to leverage azapi module, given it is in preview
 - Support for Azure Policy.  
 - More coherent IAM implementation
 - Add support for IaaS CICD agents 

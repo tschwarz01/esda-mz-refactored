@@ -111,6 +111,18 @@ vnets = {
         should_create = true
         nsg_key       = "azure_bastion_nsg"
       }
+      pbi_vnet_gateway = {
+        name          = "PowerPlatform-Vnet-Gateway"
+        cidr          = ["10.11.2.128/25"]
+        should_create = true
+        delegation = {
+          name               = "power-platform-delegation"
+          service_delegation = "Microsoft.PowerPlatform/vnetaccesslinks"
+          actions = [
+            "Microsoft.Network/virtualNetworks/subnets/join/action"
+          ]
+        }
+      }
     }
     special_subnets = {
       AzureFirewallSubnet = {
