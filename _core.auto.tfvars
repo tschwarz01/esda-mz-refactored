@@ -68,18 +68,18 @@ vnets = {
     resource_group_key = "network"
     vnet = {
       name          = "dmlz-networking"
-      address_space = ["10.11.0.0/21"]
+      address_space = ["10.7.0.0/21"]
     }
     subnets = {
       cicd = {
         name          = "cicd-iaas-agents-subnet"
-        cidr          = ["10.11.0.128/26"]
+        cidr          = ["10.7.0.128/26"]
         should_create = true
       }
       /*
       aci = {
         name          = "aci"
-        cidr          = ["10.11.0.192/26"]
+        cidr          = ["10.7.0.192/26"]
         should_create = true
         delegation = {
           name               = "acidelegation"
@@ -92,25 +92,25 @@ vnets = {
       */
       services = {
         name              = "services"
-        cidr              = ["10.11.1.0/24"]
+        cidr              = ["10.7.1.0/24"]
         service_endpoints = ["Microsoft.KeyVault"]
         should_create     = true
       }
       private_endpoints = {
         name                                           = "private-endpoints"
-        cidr                                           = ["10.11.6.0/24"]
+        cidr                                           = ["10.7.6.0/24"]
         enforce_private_link_endpoint_network_policies = true
         should_create                                  = true
       }
       bastion = {
         name          = "AzureBastionSubnet"
-        cidr          = ["10.11.2.0/25"]
+        cidr          = ["10.7.2.0/25"]
         should_create = true
         nsg_key       = "azure_bastion_nsg"
       }
       pbi_vnet_gateway = {
         name          = "PowerPlatform-Vnet-Gateway"
-        cidr          = ["10.11.2.128/25"]
+        cidr          = ["10.7.2.128/25"]
         should_create = true
         delegation = {
           name               = "power-platform-delegation"
@@ -124,12 +124,12 @@ vnets = {
     special_subnets = {
       AzureFirewallSubnet = {
         name          = "AzureFirewallSubnet" # must be named AzureFirewallSubnet
-        cidr          = ["10.11.0.0/26"]
+        cidr          = ["10.7.0.0/26"]
         should_create = true
       }
       GatewaySubnet = {
         name          = "GatewaySubnet" # must be named GatewaySubnet
-        cidr          = ["10.11.0.64/26"]
+        cidr          = ["10.7.0.64/26"]
         should_create = false
       }
     }
@@ -153,7 +153,7 @@ network_watchers = {
 
 vnet_peerings_v1 = {
   dmlz_to_hub = {
-    name = "dmlz_to_region1_connectivity_hub"
+    name = "dmz_to_region1_connectivity_hub"
     from = {
       vnet_key = "vnet_region1"
     }
@@ -166,7 +166,7 @@ vnet_peerings_v1 = {
     use_remote_gateways          = false
   }
   hub_to_dmlz = {
-    name = "region1_connectivity_hub_to_dmlz"
+    name = "region1_connectivity_hub_to_dmz"
     from = {
       id = "/subscriptions/893395a4-65a3-4525-99ea-2378c6e0dbed/resourceGroups/rg-network_connectivity_hub/providers/Microsoft.Network/virtualNetworks/vnet-connectivity_hub"
     }

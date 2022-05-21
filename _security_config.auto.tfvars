@@ -27,9 +27,10 @@ dynamic_keyvault_secrets = {
 }
 
 
+
 keyvaults = {
   kv1 = {
-    name               = "dmzintegration11"
+    name               = "dmzintegration7"
     resource_group_key = "integration"
     sku_name           = "standard"
     #enable_rbac_authorization = true
@@ -68,7 +69,7 @@ keyvaults = {
     }
   }
   kv2 = {
-    name                      = "dmzgovernance11"
+    name                      = "dmzgovernance7"
     resource_group_key        = "governance"
     sku_name                  = "standard"
     enable_rbac_authorization = true
@@ -106,6 +107,20 @@ keyvaults = {
         private_dns = {
           zone_group_name = "default"
           keys            = ["privatelink.vaultcore.azure.net"]
+        }
+      }
+    }
+  }
+}
+
+role_mapping = {
+  built_in_role_mapping = {
+    keyvaults = {
+      kv2 = {
+        "Key Vault Secrets Officer" = {
+          purview_accounts = {
+            keys = ["pva1"]
+          }
         }
       }
     }

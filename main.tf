@@ -28,14 +28,15 @@ provider "azurerm" {
 data "azurerm_client_config" "default" {}
 
 module "esa-dmz" {
-  #source                   = "./resources"
-  source                   = "github.com/tschwarz01/terraform-custom-caf-module"
+  #source                   = "github.com/tschwarz01/terraform-custom-caf-module"
+  source                   = "./resources"
   global_settings          = var.global_settings
   common_module_params     = local.common_module_params
   resource_groups          = var.resource_groups
   keyvaults                = var.keyvaults
   keyvault_access_policies = var.keyvault_access_policies
   managed_identities       = var.managed_identities
+  role_mapping             = var.role_mapping
 
   networking = {
     vnets                             = var.vnets
@@ -47,6 +48,7 @@ module "esa-dmz" {
     synapse_privatelink_hubs          = var.synapse_privatelink_hubs
     private_dns                       = try(var.private_dns.zones, {})
     private_dns_vnet_links            = local.remote_private_dns_vnet_links
+    role_mapping                      = var.role_mapping
   }
 
   compute = {

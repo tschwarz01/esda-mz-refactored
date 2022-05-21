@@ -180,3 +180,7 @@ variable "shared_image_galleries" {
 variable "synapse_privatelink_hubs" {
   default = {}
 }
+
+variable "role_mapping" {
+  default = {}
+}
