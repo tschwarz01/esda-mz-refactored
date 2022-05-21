@@ -1,4 +1,5 @@
 global_settings = {
+  inherit_tags   = true
   passthrough    = false
   random_length  = 4
   default_region = "region1"
@@ -6,8 +7,12 @@ global_settings = {
     region1 = "southcentralus"
     region2 = "centralus"
   }
+  tags = {
+    Owner   = "Cloud Scale Analytics Scenario"
+    Project = "Cloud Scale Analytics Scneario"
+    Toolkit = "Terraform"
+  }
 }
-
 
 resource_groups = {
   automation = {
