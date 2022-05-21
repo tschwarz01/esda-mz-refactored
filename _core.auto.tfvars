@@ -41,7 +41,7 @@ resource_groups = {
     should_create = true
   }
   marketplace = {
-    name          = "marketpalce"
+    name          = "marketplace"
     location      = "region1"
     should_create = true
   }
@@ -52,16 +52,6 @@ resource_groups = {
   }
   network = {
     name          = "networking"
-    location      = "region1"
-    should_create = true
-  }
-  privatedns = {
-    name          = "private-dns-zones"
-    location      = "region1"
-    should_create = true
-  }
-  service = {
-    name          = "service"
     location      = "region1"
     should_create = true
   }
@@ -86,6 +76,7 @@ vnets = {
         cidr          = ["10.11.0.128/26"]
         should_create = true
       }
+      /*
       aci = {
         name          = "aci"
         cidr          = ["10.11.0.192/26"]
@@ -98,6 +89,7 @@ vnets = {
           ]
         }
       }
+      */
       services = {
         name              = "services"
         cidr              = ["10.11.1.0/24"]
@@ -269,7 +261,7 @@ bastion_hosts = {
   bastion_hub = {
     name               = "mz_bastion-001"
     region             = "region1"
-    resource_group_key = "sharedservices"
+    resource_group_key = "logmgmt"
     vnet_key           = "vnet_region1"
     subnet_key         = "bastion"
     public_ip_key      = "bastion_host"
